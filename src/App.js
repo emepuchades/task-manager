@@ -1,10 +1,20 @@
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavLeft from './components/NavLeft';
+import NavTop from './components/NavTop';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Task manager</h1>
-    </div>
+    <Router>
+      <NavLeft />
+      <NavTop />
+      <Routes>
+        <Route path="/" exact element={<Dashboard />} />
+        <Route exact path="/about" component={NavLeft} />
+      </Routes>
+    </Router>
+
   );
 }
 
