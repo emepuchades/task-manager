@@ -1,18 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
+import { AppContext } from "../App";
 import IconButton from '@mui/material/IconButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-
+import { BsBell, BsPerson, BsSearch } from "react-icons/bs";
 
 function NavTop() {
-    const [search, setSearch] = useState('')
-
-    const handleInputChange = (event) => {
-        setSearch(event.target.value)
-    }
+    const { expand } = useContext(AppContext);
 
     return (
         <Block>
@@ -29,15 +24,15 @@ function NavTop() {
                             placeholder="Buscar"
                         />
                         <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                            <FontAwesomeIcon className="icon-search" icon={faMagnifyingGlass} />
+                            <BsSearch />
                         </IconButton>
                     </Paper>
                 </Search>
                 <Notifications>
-                    <FontAwesomeIcon icon={faBell} />
+                    <BsBell className='icon-search' />
                 </Notifications>
                 <User>
-                    <FontAwesomeIcon icon={faUser} />
+                    <BsPerson className='icon-search' />
                 </User>
             </RigthBlock>
         </Block>
@@ -47,6 +42,7 @@ function NavTop() {
 const Block = styled.div`
     display: flex;
     align-items: center;
+    margin-left: 90px;
     height: 80px;
 `;
 
@@ -62,13 +58,13 @@ const Route = styled.div`
 const RigthBlock = styled.div`
     display: flex;
     float: rigth;
+    .icon-search{
+        width: 24px;
+        height: 24px;
+    }
 `;
 const Search = styled.div`
     margin-right: 60px;
-
-    .icon-search{
-        width: 18px;
-    }
 `;
 const Notifications = styled.div`
     display: flex;
