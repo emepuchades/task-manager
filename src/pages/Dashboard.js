@@ -1,25 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { BsPlus } from "react-icons/bs";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { BsX } from "react-icons/bs";
+import firebase from 'firebase/app'
 
 function Dashboard() {
     const [open, setOpen] = useState(false);
+    const [boards, setBoards] = useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        async function getBoards() {
+            const todo = []
+            const response = firebase.firestore().collection("boards");
+            const data = await response.get();
+            data.docs.map(item => {
+                todo.push(item.data())
+                setBoards(todo);
+                //boards ? setBoards([...boards, item.data()])
+            })
+        }
+        getBoards()
+    }, [])
+
 
     return (
         <Block>
             <Text>
-                👋 ¡Hola $user, empieza a crear tareas con Task Manager!
+                👋 ¡Hola $user, empieza a rear tareas con Task Manager!
             </Text>
             <CardEmpty onClick={handleOpen}>
                 <BsPlus className='icon-plus' />
                 <CardText>Crea un nuevo projecto</CardText>
             </CardEmpty>
+            {boards.map((board) =>
+                <CardEmpty key={board.name} onClick={handleOpen}>
+                    <BsPlus className='icon-plus' />
+                    <CardText>{board.name}</CardText>
+                </CardEmpty>
+            )}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -31,10 +54,10 @@ function Dashboard() {
                         Crear tablero
                         <Icon onClick={handleClose}>
                             <BsX />
-                        </Icon> 
+                        </Icon>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <InputModal type="text" placeholder="Titulo del proyecto" autofocus />
+                        <InputModal type="text" placeholder="Titulo del proyecto" />
                         <ButtonModal>Crear</ButtonModal>
                     </Typography>
                 </Box>
@@ -44,7 +67,6 @@ function Dashboard() {
 }
 
 const Block = styled.div`
-    width: 100%;
     margin-left: 90px;
     padding: 0px 34px;
     .bsx {

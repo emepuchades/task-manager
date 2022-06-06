@@ -21,7 +21,6 @@ function App() {
         <NavTop />
         <Routes>
           <Route path="/" exact element={<Dashboard />} />
-          <Route exact path="/about" component={NavLeft} />
         </Routes>
       </Router>
     </AppContext.Provider>
