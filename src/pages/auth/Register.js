@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from 'styled-components'
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { Alert } from "./Alert";
@@ -9,6 +10,7 @@ function Register() {
   const [user, setUser] = useState({
     email: "",
     password: "",
+    username: "",
   });
 
   const [error, setError] = useState("");
@@ -18,7 +20,7 @@ function Register() {
     e.preventDefault();
     setError("");
     try {
-      await signup(user.email, user.password);
+      await signup(user.email, user.password, user.username);
       navigate("/");
     } catch (error) {
       setError(error.message);
@@ -26,55 +28,82 @@ function Register() {
   };
 
   return (
-    <div className="w-full max-w-xs m-auto text-black">
+    <Block>
       {error && <Alert message={error} />}
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-6 mb-4"
-      >
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="youremail@company.tld"
-          />
-        </div>
+      <Form onSubmit={handleSubmit}>
+        <Title>Registro</Title>
 
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="*************"
-          />
-        </div>
+        <TextInput> Email </TextInput>
+        <Input type="email" onChange={(e) => setUser({ ...user, email: e.target.value })} placeholder="email" />
 
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Register
-        </button>
-      </form>
-      <p className="my-4 text-sm flex justify-between px-3">
-        Already have an Account?
-        <Link to="/login" className="text-blue-700 hover:text-blue-900">
-          Login
-        </Link>
-      </p>
-    </div>
+        <TextInput> Contraseña </TextInput>
+        <Input type="password" onChange={(e) => setUser({ ...user, password: e.target.value })} />
+
+        <Button> Register </Button>
+        <Text>¿ Ya tienes una cuenta? <Link to="/login" > Inicia sesión </Link></Text>
+      </Form>
+
+    </Block>
   );
 }
+
+const Block = styled.div`
+  display: flex;
+  height: 100vh;
+  background-color: #E6EDFA;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Title = styled.p`
+  font-size: 30px;
+  font-weight: bold;
+  color: #3B79D3;
+  margin: 5px;
+`;
+const Text = styled.p`
+  font-size: 15px;
+  &.textpassword {
+    width: 100%;
+  }
+`;
+const TextInput = styled.p`
+  font-size: 18px;
+  width: 100%;
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  width: 340px;
+  height: 350px;
+  border-radius: 8px;
+  padding: 60px;
+`;
+
+const Input = styled.input`
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  width: 96%;
+  padding: 10px;
+  background-color: #ffffff;
+`;
+const Button = styled.button`
+  width: 100%;  
+  padding: 1em;
+  background: #3B79D3;
+  margin-top: 30px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 15px;
+`;
 
 export default Register;

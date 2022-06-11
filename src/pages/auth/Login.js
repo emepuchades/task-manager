@@ -1,7 +1,10 @@
 import { useState } from "react";
+import styled from 'styled-components'
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { Alert } from "./Alert";
+import logo from '../../assets/images/logo-google.png';
+
 
 function Login() {
   const [user, setUser] = useState({
@@ -37,86 +40,115 @@ function Login() {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    if (!user.email) return setError("Write an email to reset password");
+    if (!user.email) return setError("Te hemos enviado un email para que restaures la contreaseña");
     try {
       await resetPassword(user.email);
-      setError('We sent you an email. Check your inbox')
+      setError('Te hemos enviado un email! Mira tu correo')
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div className="w-full max-w-xs m-auto">
+    <Block>
       {error && <Alert message={error} />}
+      <Form onSubmit={handleSubmit}>
+        <Title>Iniciar sesión</Title>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      >
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="youremail@company.tld"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="*************"
-          />
-        </div>
+        <ButtonGoogle onClick={handleGoogleSignin}>
+          <Image src={logo} alt="Logo" /> <p>Accede con google</p>
+        </ButtonGoogle>
 
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Sign In
-          </button>
-          <a
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-            href="#!"
-            onClick={handleResetPassword}
-          >
-            Forgot Password?
-          </a>
-        </div>
-      </form>
-      <button
-        onClick={handleGoogleSignin}
-        className="bg-slate-50 hover:bg-slate-200 text-black  shadow rounded border-2 border-gray-300 py-2 px-4 w-full"
-      >
-        Google login
-      </button>
-      <p className="my-4 text-sm flex justify-between px-3">
-        Don't have an account?
-        <Link to="/register" className="text-blue-700 hover:text-blue-900">
-          Register
-        </Link>
-      </p>
-    </div>
+        <TextInput> Email</TextInput>
+        <Input type="email" name="email" id="email" onChange={handleChange} placeholder="email" />
+        <TextInput> Password </TextInput>
+        <Input type="password" name="password" id="password" onChange={handleChange} />
+        <LinkPassword href="#!" onClick={handleResetPassword}>
+          <Text>¿Olvidaste la contraseña?</Text>
+        </LinkPassword>
+
+        <Button type="submit"> Iniciar sesión </Button>
+        <Text>¿No tienes cuenta? <Link to="/register"> Crear cuenta</Link></Text>
+      </Form>
+
+    </Block>
   );
 }
+
+
+const Block = styled.div`
+  display: flex;
+  height: 100vh;
+  background-color: #E6EDFA;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Title = styled.p`
+  font-size: 30px;
+  font-weight: bold;
+  color: #3B79D3;
+`;
+const Text = styled.p`
+  font-size: 15px;
+  &.textpassword {
+    width: 100%;
+  }
+`;
+const TextInput = styled.p`
+  font-size: 18px;
+  width: 100%;
+`;
+const Image = styled.img`
+  padding: 10px;
+  height: 20px;
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  width: 340px;
+  height: 350px;
+  border-radius: 8px;
+  padding: 60px;
+`;
+
+const Input = styled.input`
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  width: 96%;
+  padding: 10px;
+  background-color: #ffffff;
+`;
+const Button = styled.button`
+  width: 100%;  
+  padding: 1em;
+  background: #3B79D3;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 15px;
+`;
+const LinkPassword = styled.a`
+  width: 100%; 
+`;
+const ButtonGoogle = styled.button`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #F1F1F1;
+  border-radius: 10px;
+  font-size: 16px;
+}
+`;
 
 export default Login

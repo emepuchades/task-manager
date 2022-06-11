@@ -58,7 +58,8 @@ function Dashboard() {
             <Block>
                 <button onClick={handleLogout} > cerrar sesion </button>
                 <Text>
-                    👋 ¡Hola $user, empieza a rear tareas con Task Manager!
+                    {console.log('user', user)}
+                    👋 ¡Hola, empieza a crear tareas con Task Manager!
                 </Text>
                 <BlockBoard>
                     <CardEmpty onClick={handleOpen}>
@@ -70,8 +71,7 @@ function Dashboard() {
                             <CardEmpty key={board.name} onClick={handleOpen}>
                                 <CardText>{board.name}</CardText>
                                 {board.fav ?
-                                    <BsHeart className='iconheart' /> :
-                                    <BsHeartFill className="heartfill iconheart" />
+                                    <BsHeartFill className="heartfill iconheart" /> : <BsHeart className='iconheart' />        
                                 }
                             </CardEmpty>
                         </Link>
