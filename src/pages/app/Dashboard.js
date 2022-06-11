@@ -56,7 +56,6 @@ function Dashboard() {
             <NavLeft />
             <NavTop />
             <Block>
-                {console.log('newProject', newProject)}
                 <button onClick={handleLogout} > cerrar sesion </button>
                 <Text>
                     👋 ¡Hola $user, empieza a rear tareas con Task Manager!
