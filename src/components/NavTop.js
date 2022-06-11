@@ -29,10 +29,10 @@ function NavTop() {
                     </Paper>
                 </Search>
                 <Notifications>
-                    <BsBell className='icon-search' />
+                    <BsBell className='icon-bell' />
                 </Notifications>
                 <User>
-                    <BsPerson className='icon-search' />
+                    <BsPerson className='icon-user' />
                 </User>
             </RigthBlock>
         </Block>
@@ -58,9 +58,13 @@ const Route = styled.div`
 const RigthBlock = styled.div`
     display: flex;
     float: rigth;
-    .icon-search{
+    .icon-bell{
         width: 24px;
         height: 24px;
+    }
+    .icon-user{
+        width: 30px;
+        height: 30px;
     }
 `;
 const Search = styled.div`

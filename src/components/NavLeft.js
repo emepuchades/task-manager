@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import { AppContext } from "../App";
+import { Link } from "react-router-dom";
 import logo from '../assets/images/logo.png';
 import { BsHouse, BsHeart, BsCollection, BsPeople, BsGear, BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs";
 
@@ -22,11 +23,11 @@ function NavLeft() {
       <Menu>
         <Li>
           <BsHouse className="icon-search" />
-          <Text>Inicio</Text>
+          <Link to="/"> <Text>Inicio</Text> </Link>
         </Li>
         <Li>
           <BsCollection className="icon-search" />
-          <Text>Tableros</Text>
+          <Link to="/"> <Text>Tableros</Text> </Link>
         </Li>
         <Li>
           <BsHeart className="icon-search" />
