@@ -111,6 +111,13 @@ const Li = styled.div`
     border-right-style: solid;
     border-left-color: #3169F6;
   }
+  a {
+    text-decoration: none;
+    color: black;
+    :hover {
+      color: #3169F6;
+    }
+  }
 `;
 const Text = styled.div`
   margin-left: 30px;
