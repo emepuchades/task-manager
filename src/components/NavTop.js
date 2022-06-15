@@ -5,9 +5,19 @@ import InputBase from '@mui/material/InputBase';
 import { AppContext } from "../App";
 import IconButton from '@mui/material/IconButton';
 import { BsBell, BsPerson, BsSearch } from "react-icons/bs";
+import { useAuth } from "../pages/auth/AuthContext";
 
 function NavTop() {
     const { expand } = useContext(AppContext);
+    const { logout, user } = useAuth();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
 
     return (
         <Block>
@@ -32,7 +42,7 @@ function NavTop() {
                     <BsBell className='icon-bell' />
                 </Notifications>
                 <User>
-                    <BsPerson className='icon-user' />
+                    <Button className='icon-user'  onClick={handleLogout} > cerrar sesion </Button>
                 </User>
             </RigthBlock>
         </Block>
@@ -62,10 +72,6 @@ const RigthBlock = styled.div`
         width: 24px;
         height: 24px;
     }
-    .icon-user{
-        width: 30px;
-        height: 30px;
-    }
 `;
 const Search = styled.div`
     margin-right: 60px;
@@ -79,6 +85,18 @@ const User = styled.div`
     display: flex;
     align-items: center;
     margin-right: 60px;
+`;
+
+const Button = styled.div`
+    background: #3B79D3;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 15px;
+    width: 100px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
 `;
 
 export default NavTop
