@@ -14,6 +14,7 @@ export const AppContext = createContext()
 
 function App() {
   const [expand, setExpand] = useState(false)
+  const [menuState, setMenuState] = useState(0)
 
   const changeExpand = () => {
     expand ? setExpand(false) : setExpand(true)
@@ -21,7 +22,7 @@ function App() {
 
   return (
     <AppContext.Provider
-      value={{ changeExpand, expand }}>
+      value={{ changeExpand, expand, menuState, setMenuState }}>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />

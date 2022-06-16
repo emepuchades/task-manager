@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db, app } from "../../firebase";
+import { AppContext } from "../../App";
 import { useAuth } from "../auth/AuthContext";
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
@@ -14,6 +15,7 @@ import NavTop from '../../components/NavTop';
 
 function Dashboard() {
     const [open, setOpen] = useState(false);
+    const { menuState } = useContext(AppContext);
     const [boards, setBoards] = useState([]);
     const [newProject, setNewProject] = useState({ name: '', fav: false });
     const { logout, user } = useAuth();
@@ -68,11 +70,24 @@ function Dashboard() {
                     </CardEmpty>
                     {boards ? boards.map((board, index) =>
                         <>
-                            <Link className='card' to="/project" key={board}>
-                                <CardText>{board.name}</CardText>
-                            </Link>
-                            {board.fav ?
-                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} /> : <BsHeart className='iconheart' onClick={() => fav(index, true)} />}
+                            {menuState === 2 ?
+                                board.fav ?
+                                    <>
+                                        <Link className='card' to="/project" key={board}>
+                                            <CardText>{board.name}</CardText>
+                                        </Link>
+                                        <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} />
+                                    </>
+                                    : null
+                                :
+                                <>
+                                    <Link className='card' to="/project" key={board}>
+                                        <CardText>{board.name}</CardText>
+                                    </Link>
+                                    {board.fav ?
+                                        <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} />
+                                        : <BsHeart className='iconheart' onClick={() => fav(index, true)} />}
+                                </>}
                         </>
                     ) : null}
                     <Modal
