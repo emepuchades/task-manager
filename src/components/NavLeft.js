@@ -6,7 +6,7 @@ import logo from '../assets/images/logo.png';
 import { BsHouse, BsHeart, BsCollection, BsPeople, BsGear, BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs";
 
 function NavLeft() {
-  const { changeExpand, expand } = useContext(AppContext);
+  const { changeExpand, expand, setMenuState, menuState } = useContext(AppContext);
 
   return (
     <Nav className={expand ? 'expand' : ''}>
@@ -21,23 +21,23 @@ function NavLeft() {
         </Arrow>
       </MenuTop>
       <Menu>
-        <Li>
+        <Li onClick={() => setMenuState(0)} className={menuState === 0 ? 'focus' : null}>
           <BsHouse className="icon-search" />
           <Link to="/"> <Text>Inicio</Text> </Link>
         </Li>
-        <Li>
+        <Li onClick={() => setMenuState(1)} className={menuState === 1 ? 'focus' : null}>
           <BsCollection className="icon-search" />
-          <Link to="/"> <Text>Tableros</Text> </Link>
+          <Link to="/"> <Text >Tableros</Text> </Link>
         </Li>
-        <Li>
+        <Li onClick={() => setMenuState(2)} className={menuState === 2 ? 'focus' : null}>
           <BsHeart className="icon-search" />
           <Text>Favoritos</Text>
         </Li>
-        <Li>
+        <Li onClick={() => setMenuState(3)} className={menuState === 3 ? 'focus' : null}>
           <BsPeople className="icon-search" />
           <Text>Miembros</Text>
         </Li>
-        <Li>
+        <Li onClick={() => setMenuState(4)} className={menuState === 4 ? 'focus' : null}>
           <BsGear className="icon-search" />
           <Text>Configuración</Text>
         </Li>
@@ -117,6 +117,15 @@ const Li = styled.div`
     :hover {
       color: #3169F6;
     }
+  }
+  &.focus {
+    color: #3169F6;
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-left-color: #3169F6;
+      a {
+        color: #3169F6;
+      }
   }
 `;
 const Text = styled.div`
