@@ -41,14 +41,16 @@ function Dashboard() {
                 boards: [newProject]
             })
         }
+        handleClose()
     }
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-        } catch (error) {
-            console.error(error.message);
-        }
+    const fav = async (index, isFav) => {
+        boards[index].fav = isFav
+
+        const userBoardsRef = doc(db, "userBoards", user.uid);
+        await setDoc(userBoardsRef, {
+            boards
+        })
     };
 
     return (
@@ -56,25 +58,22 @@ function Dashboard() {
             <NavLeft />
             <NavTop />
             <Block>
-                <button onClick={handleLogout} > cerrar sesion </button>
                 <Text>
-                    {console.log('user', user)}
                     👋 ¡Hola, empieza a crear tareas con Task Manager!
                 </Text>
                 <BlockBoard>
                     <CardEmpty onClick={handleOpen}>
                         <BsPlus className='icon-plus' />
-                        <CardText>Crea un nuevo projecto</CardText>
+                        <CardText>Nuevo projecto</CardText>
                     </CardEmpty>
-                    {boards ? boards.map((board) =>
-                        <Link to="/project">
-                            <CardEmpty key={board.name} onClick={handleOpen}>
+                    {boards ? boards.map((board, index) =>
+                        <>
+                            <Link className='card' to="/project" key={board}>
                                 <CardText>{board.name}</CardText>
-                                {board.fav ?
-                                    <BsHeartFill className="heartfill iconheart" /> : <BsHeart className='iconheart' />        
-                                }
-                            </CardEmpty>
-                        </Link>
+                            </Link>
+                            {board.fav ?
+                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} /> : <BsHeart className='iconheart' onClick={() => fav(index, true)} />}
+                        </>
                     ) : null}
                     <Modal
                         open={open}
@@ -121,7 +120,37 @@ const Text = styled.div`
 const BlockBoard = styled.div`
     font-size: 28px;
     margin-top: 40px;
-    display: inline-flex;
+    width: auto;
+    display: table;
+    .card {
+        display: flex;    
+        background-color: #FFFFFF;
+        border-radius: 10px;
+        margin-top: 50px;
+        padding: 40px;
+        width: 220px;
+        border-radius: 10px;
+        margin: 15px;
+        text-decoration: none;
+        color: #111111;
+        display: inline-table;
+        :hover {
+            background-color:  #F0F0F3;
+    
+        }
+    }
+    .heartfill {
+        color: red;
+    }
+    .iconheart{
+        position: relative;
+        right: 60px;
+        width: 20px;
+        top: 40px;
+        :hover {
+            color: red;
+        }
+    }
 `;
 
 const CardText = styled.div`
@@ -129,6 +158,7 @@ const CardText = styled.div`
     align-items: center;
     font-size: 18px;
     margin-left: 20px;
+    width: 100%;
 `;
 const CardEmpty = styled.div`
     display: flex;    
@@ -136,7 +166,7 @@ const CardEmpty = styled.div`
     border-radius: 10px;
     margin-top: 50px;
     padding: 40px;
-    width: 250px;
+    width: 220px;
     border-radius: 10px;
     margin: 15px;
     .icon-plus{
@@ -145,14 +175,6 @@ const CardEmpty = styled.div`
     }
     :hover {
         background-color:  #F0F0F3;
-
-    }
-    .heartfill {
-        color: red;
-    }
-    .iconheart{
-        width: 20px;
-        height: 20px;
     }
 `;
 
@@ -196,7 +218,6 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
     padding: '40px',
