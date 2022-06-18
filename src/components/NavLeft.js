@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { AppContext } from "../App";
 import { Link } from "react-router-dom";
 import logo from '../assets/images/logo.png';
-import { BsHouse, BsHeart, BsCollection, BsPeople, BsGear, BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs";
+import { BsHouse, BsHeart, BsCollection, BsPeople, BsGear, BsArrowBarLeft, BsArrowBarRight, BsPerson } from "react-icons/bs";
 
 function NavLeft() {
   const { changeExpand, expand, setMenuState, menuState } = useContext(AppContext);
@@ -34,8 +34,8 @@ function NavLeft() {
           <Text>Favoritos</Text>
         </Li>
         <Li onClick={() => setMenuState(3)} className={menuState === 3 ? 'focus' : null}>
-          <BsPeople className="icon-search" />
-          <Text>Miembros</Text>
+          <BsPerson className="icon-search" />
+          <Link to="/"> <Text> Perfil </Text> </Link>
         </Li>
         <Li onClick={() => setMenuState(4)} className={menuState === 4 ? 'focus' : null}>
           <BsGear className="icon-search" />
