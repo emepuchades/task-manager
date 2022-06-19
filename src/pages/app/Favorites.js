@@ -4,8 +4,7 @@ import { db } from "../../firebase";
 import { useAuth } from "../auth/AuthContext";
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
-import { BsX, BsHeart, BsHeartFill } from "react-icons/bs";
-
+import { BsHeartFill } from "react-icons/bs";
 
 function Favorites() {
     const [boards, setBoards] = useState([]);
@@ -28,7 +27,6 @@ function Favorites() {
             boards
         })
     };
-
 
     return (
         <>

@@ -7,7 +7,6 @@ import Home from './Home';
 import Favorites from './Favorites';
 import Board from './Board';
 import Profile from './Profile';
-import Settings from './Settings';
 
 function Dashboard() {
     const { menuState } = useContext(AppContext);
@@ -20,8 +19,6 @@ function Dashboard() {
                 return <Favorites />;
             case 3:
                 return <Profile />;
-            case 4:
-                return <Settings />;
             default:
                 return <Home />;
         }

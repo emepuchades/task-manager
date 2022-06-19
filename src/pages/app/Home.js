@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { BsX, BsHeart, BsHeartFill } from "react-icons/bs";
 
-
 function Home() {
     const [open, setOpen] = useState(false);
     const [boards, setBoards] = useState([]);
@@ -51,7 +50,6 @@ function Home() {
             boards
         })
     };
-
 
     return (
         <>

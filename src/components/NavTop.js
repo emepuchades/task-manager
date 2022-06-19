@@ -1,15 +1,54 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { db, app } from "../firebase";
 import styled from 'styled-components'
 import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
 import InputBase from '@mui/material/InputBase';
 import { AppContext } from "../App";
 import IconButton from '@mui/material/IconButton';
+import { Link } from "react-router-dom";
 import { BsBell, BsPerson, BsSearch } from "react-icons/bs";
 import { useAuth } from "../pages/auth/AuthContext";
+import Avatar from '@mui/material/Avatar';
 
 function NavTop() {
-    const { expand } = useContext(AppContext);
+    const { expand, menuState } = useContext(AppContext);
     const { logout, user } = useAuth();
+    const [boards, setBoards] = useState([]);
+    const [isSearch, setIsSearch] = useState("");
+    const [isProfile, setIsProfile] = useState("");
+    const [profileUser, setProfileUser] = useState([]);
+    const [isNotifications, setIsNotifications] = useState([]);
+    const [filteredContacts, setFilteredContacts] = useState([]);
+
+    useEffect(() => {
+        async function getBoards() {
+            onSnapshot(doc(db, "userBoards", user.uid), (doc) => {
+                setBoards(doc.data().boards)
+            });
+        }
+        getBoards()
+        async function getProfile() {
+            onSnapshot(doc(db, "usersProfile", user.uid), (doc) => {
+                setProfileUser(doc.data())
+            });
+          }
+          getProfile()
+    }, []);
+
+    useEffect(() => {
+        setFilteredContacts(
+            boards.filter(
+                (board) =>
+                    board.name.toLowerCase().includes(isSearch.toLowerCase())
+            )
+        );
+    }, [isSearch]);
 
     const handleLogout = async () => {
         try {
@@ -19,9 +58,28 @@ function NavTop() {
         }
     };
 
+    const profile = async () => {
+        isProfile ? setIsProfile(false) : setIsProfile(true)
+    };
+
+    function renderSwitch(param) {
+        switch (param) {
+            case 1:
+                return "Tableros";
+            case 2:
+                return "Favoritos";
+            case 3:
+                return "Perfil";
+            case 4:
+                return "Configuración";
+            default:
+                return "Inicio";
+        }
+    }
+
     return (
         <Block>
-            <Route>Inicio</Route>
+            <Route>{renderSwitch(menuState)}</Route>
             <RigthBlock>
                 <Search>
                     <Paper
@@ -31,18 +89,43 @@ function NavTop() {
                     >
                         <InputBase
                             sx={{ ml: 1, flex: 1 }}
+                            onChange={(e) => setIsSearch(e.target.value)}
                             placeholder="Buscar"
                         />
                         <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
                             <BsSearch />
                         </IconButton>
                     </Paper>
+                    <SearchFilter>
+                        {isSearch ?
+                            filteredContacts.length > 0 ?
+                                filteredContacts.map((filterContact) =>
+                                    <Boards key={filterContact.name}>
+                                        <Link className='card' to="/project"> {filterContact.name} </Link>
+                                    </Boards>
+                                ) :
+                                <Boards>
+                                    No hay ningun projecto con este nombre
+                                </Boards>
+                            : null}
+                    </SearchFilter>
                 </Search>
-                <Notifications>
-                    <BsBell className='icon-bell' />
-                </Notifications>
                 <User>
-                    <Button className='icon-user'  onClick={handleLogout} > cerrar sesion </Button>
+                    <Avatar className='avatar' onClick={() => profile()}>{user.email[0]}</Avatar>
+                    {isProfile ?
+                        <ProfileSettings>
+                            <List>
+                                <ListItem disablePadding>
+                                        <BsPerson className="icon-search" />
+                                        <ListItemText primary={profileUser ? profileUser.userName ? profileUser.userName : null : user.email} />
+                                </ListItem>
+                                <Divider />
+                                <ListItemButton>
+                                    <Button className='icon-user' onClick={handleLogout} > cerrar sesion </Button>
+                                </ListItemButton>
+                            </List>
+                        </ProfileSettings>
+                        : null}
                 </User>
             </RigthBlock>
         </Block>
@@ -73,8 +156,27 @@ const RigthBlock = styled.div`
         height: 24px;
     }
 `;
+const SearchFilter = styled.div`
+    position: absolute;
+    background: white;
+    width: 258px;
+    margin-top: 5px;
+`;
+const Boards = styled.div` 
+    font-size: 17px;
+    border-bottom: 1px #F1F1F1 solid;
+    padding: 8px;
+    a {
+        text-decoration: none;
+        color: #111111;
+    }
+`;
+const Text = styled.div`
+    font-size: 18px;
+    font-weight: bold;
+`;
 const Search = styled.div`
-    margin-right: 60px;
+    margin: 0px 60px;
 `;
 const Notifications = styled.div`
     display: flex;
@@ -87,16 +189,23 @@ const User = styled.div`
     margin-right: 60px;
 `;
 
+const ProfileSettings = styled.div`
+    position: absolute;
+    background: white;
+    width: 180px;
+    top: 70px;
+    height: 100px;
+    right: 21px;
+    margin-top: 5px;
+`;
+
 const Button = styled.div`
-    background: #3B79D3;
-    border-radius: 10px;
-    font-weight: 600;
-    color: #ffffff;
-    font-size: 15px;
-    width: 100px;
-    padding: 10px;
     text-align: center;
+    padding: 10px;
     cursor: pointer;
+    :hover {
+        background-color:  #F0F0F3;
+    }
 `;
 
 export default NavTop
