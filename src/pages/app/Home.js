@@ -64,7 +64,7 @@ function Home() {
                     </CardEmpty>
                     {boards ? boards.map((board, index) =>
                         <>
-                            <Link className='card' to="/project" key={index}>
+                            <Link className='card' to={`/project/${board.name}`} key={index}>
                                 <CardText>{board.name}</CardText>
                             </Link>
                             {board.fav ?

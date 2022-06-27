@@ -35,7 +35,7 @@ function Favorites() {
                     {boards ? boards.map((board, index) =>
                         board.fav ?
                             <>
-                                <Link className='card' to="/project" key={index}>
+                                <Link className='card' to={`/project/${board.name}`} key={index}>
                                     <CardText>{board.name}</CardText>
                                 </Link>
                                 <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} />

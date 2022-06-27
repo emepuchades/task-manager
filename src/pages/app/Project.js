@@ -2,13 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import NavLeft from '../../components/NavLeft';
 import NavTop from '../../components/NavTop';
+import { useParams } from "react-router-dom";
 
-function Project() {
+const Project = (props) => {
+  let { id } = useParams(); 
+  console.log('id', id)
+
   return (
     <Block>
       <NavLeft />
       <NavTop />
-      <Title>Project</Title>
+      <Title>{id}</Title>
     </Block>
   )
 }
@@ -16,7 +20,11 @@ function Project() {
 const Block = styled.div`
 
 `;
-const Title = styled.div`
+const Title = styled.h1`
+  margin-left: 100px;
+`;
+
+const Text = styled.div`
   margin-left: 100px;
 `;
 
