@@ -116,7 +116,7 @@ function NavTop() {
                         <ProfileSettings>
                             <List>
                                 <ListItem disablePadding>
-                                        <BsPerson className="icon-search" />
+                                        <BsPerson className="icon-person" />
                                         <ListItemText primary={profileUser ? profileUser.userName ? profileUser.userName : null : user.email} />
                                 </ListItem>
                                 <Divider />
@@ -178,11 +178,6 @@ const Text = styled.div`
 const Search = styled.div`
     margin: 0px 60px;
 `;
-const Notifications = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 60px;
-`;
 const User = styled.div`
     display: flex;
     align-items: center;
@@ -197,6 +192,11 @@ const ProfileSettings = styled.div`
     height: 100px;
     right: 21px;
     margin-top: 5px;
+    text-align: center;
+    .icon-person {
+        width: 24px;
+        height: 24px;
+    }
 `;
 
 const Button = styled.div`
