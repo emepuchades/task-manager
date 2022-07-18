@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, collection, addDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuth } from "../auth/AuthContext";
 import styled from 'styled-components'
@@ -12,20 +12,22 @@ function Favorites() {
 
     useEffect(() => {
         async function getBoards() {
-            onSnapshot(doc(db, "userBoards", user.uid), (doc) => {
-                setBoards(doc.data().boards)
+            const subColRef = collection(db, "userBoards", user.uid, "boards")
+            onSnapshot(subColRef, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    setBoards(boards => [...boards, { id: doc.id, name: doc.data().name, fav: doc.data().fav }]);
+                });
             });
         }
         getBoards()
     }, [])
 
-    const fav = async (index, isFav) => {
-        boards[index].fav = isFav
-
-        const userBoardsRef = doc(db, "userBoards", user.uid);
-        await setDoc(userBoardsRef, {
-            boards
-        })
+    const fav = async (boardInfo, isFav) => {
+        const boardRef = doc(db, "userBoards", user.uid, "boards", boardInfo.id);
+        await updateDoc(boardRef, {
+            name: boardInfo.name,
+            fav: isFav
+        });
     };
 
     return (
@@ -38,7 +40,7 @@ function Favorites() {
                                 <Link className='card' to={`/project/${board.name}`} key={index}>
                                     <CardText>{board.name}</CardText>
                                 </Link>
-                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} />
+                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(board, false)} />
                             </>
                             : null
                     ) : null}

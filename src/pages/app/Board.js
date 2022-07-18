@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, collection, addDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuth } from "../auth/AuthContext";
 import styled from 'styled-components'
@@ -21,34 +21,33 @@ function Board() {
 
     useEffect(() => {
         async function getBoards() {
-            onSnapshot(doc(db, "userBoards", user.uid), (doc) => {
-                setBoards(doc.data().boards)
+            const subColRef = collection(db, "userBoards", user.uid, "boards")
+            onSnapshot(subColRef, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    setBoards(boards => [...boards, { id: doc.id, name: doc.data().name, fav: doc.data().fav }]);                   
+                });
             });
         }
         getBoards()
     }, [])
 
     async function addTodo() {
-        if (boards) {
-            setBoards([...boards, newProject])
-            setDoc(doc(db, 'userBoards', user.uid), {
-                boards
-            })
-        } else {
-            setDoc(doc(db, 'userBoards', user.uid), {
-                boards: [newProject]
-            })
-        }
+        const boardsRef = collection(db, "userBoards");
+        await addDoc(collection(boardsRef, user.uid, 'boards'), {
+            name: newProject.name,
+            fav: false
+        });
+
         handleClose()
     }
 
-    const fav = async (index, isFav) => {
-        boards[index].fav = isFav
-
-        const userBoardsRef = doc(db, "userBoards", user.uid);
-        await setDoc(userBoardsRef, {
-            boards
-        })
+    const fav = async (boardInfo, isFav) => {
+        const boardRef = doc(db, "userBoards", user.uid, "boards", boardInfo.id);
+        await updateDoc(boardRef, {
+            name: boardInfo.name,
+            fav: isFav
+        });
+        {console.log("boads", boards)}
     };
 
     return (
@@ -61,12 +60,12 @@ function Board() {
                     </CardEmpty>
                     {boards ? boards.map((board, index) =>
                         <>
-                            <Link className='card' to="/project" key={index}>
+                            <Link className='card' to={`/project/${board.id}`}>
                                 <CardText>{board.name}</CardText>
                             </Link>
                             {board.fav ?
-                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} />
-                                : <BsHeart className='iconheart' onClick={() => fav(index, true)} />}
+                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(board, false)} />
+                                : <BsHeart className='iconheart' onClick={() => fav(board, true)} />}
                         </>
                     ) : null}
                     <Modal
@@ -104,11 +103,6 @@ const Block = styled.div`
         width: 31px;
         height: 31px;
     }
-`;
-
-const Text = styled.div`
-    font-size: 28px;
-    margin-top: 40px;
 `;
 
 const BlockBoard = styled.div`
@@ -208,6 +202,7 @@ const Icon = styled.div`
 
 const style = {
     position: 'absolute',
+    backgroundColor: '#FFFFFF',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',

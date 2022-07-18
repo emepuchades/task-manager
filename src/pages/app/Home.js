@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, collection, addDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuth } from "../auth/AuthContext";
 import styled from 'styled-components'
@@ -9,46 +9,53 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { BsX, BsHeart, BsHeartFill } from "react-icons/bs";
+import { AppContext } from "../../App";
 
 function Home() {
     const [open, setOpen] = useState(false);
-    const [boards, setBoards] = useState([]);
     const [newProject, setNewProject] = useState({ name: '', fav: false });
-    const { logout, user } = useAuth();
+    const { logout, user } = useAuth();    
+    const [boards, setBoards] = useState([]);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
         async function getBoards() {
-            onSnapshot(doc(db, "userBoards", user.uid), (doc) => {
-                setBoards(doc.data().boards)
+            const subColRef = collection(db, "userBoards", user.uid, "boards")
+            onSnapshot(subColRef, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    setBoards(boards => [...boards, { id: doc.id, name: doc.data().name, fav: doc.data().fav }]);
+                });
             });
         }
         getBoards()
     }, [])
 
+    async function getBoards() {
+        const subColRef = collection(db, "userBoards", user.uid, "boards")
+        onSnapshot(subColRef, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                setBoards(boards => [...boards, { id: doc.id, name: doc.data().name, fav: doc.data().fav }]);
+            });
+        });
+    }
+
     async function addTodo() {
-        if (boards) {
-            setBoards([...boards, newProject])
-            setDoc(doc(db, 'userBoards', user.uid), {
-                boards
-            })
-        } else {
-            setDoc(doc(db, 'userBoards', user.uid), {
-                boards: [newProject]
-            })
-        }
+        const boardsRef = collection(db, "userBoards");
+        await addDoc(collection(boardsRef, user.uid, 'boards'), {
+            name: newProject.name,
+            fav: false
+        });
         handleClose()
     }
 
-    const fav = async (index, isFav) => {
-        boards[index].fav = isFav
-
-        const userBoardsRef = doc(db, "userBoards", user.uid);
-        await setDoc(userBoardsRef, {
-            boards
-        })
+    const fav = async (boardInfo, isFav) => {
+        const boardRef = doc(db, "userBoards", user.uid, "boards", boardInfo.id);
+        await updateDoc(boardRef, {
+            name: boardInfo.name,
+            fav: isFav
+        });
     };
 
     return (
@@ -68,7 +75,7 @@ function Home() {
                                 <CardText>{board.name}</CardText>
                             </Link>
                             {board.fav ?
-                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(index, false)} />
+                                <BsHeartFill className="heartfill iconheart" onClick={() => fav(board, false)} />
                                 : <BsHeart className='iconheart' onClick={() => fav(index, true)} />}
                         </>
                     ) : null}
@@ -77,6 +84,7 @@ function Home() {
                         onClose={handleClose}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
+                        className="add-task"
                     >
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -106,6 +114,9 @@ const Block = styled.div`
         right: 0;
         width: 31px;
         height: 31px;
+    }
+    .add-task {
+        background-color: white;
     }
 `;
 
