@@ -2,7 +2,6 @@ import './App.css';
 import React, { createContext, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { ProtectedRoute } from "./pages/auth/PrivateRoute";
-
 import { AuthProvider } from "./pages/auth/AuthContext";
 
 import Dashboard from './pages/app/Dashboard';
