@@ -7,6 +7,10 @@ Task Manager es una plataforma que te permite gestionar tus tareas.
 * Reactjs
 * Firebase
 
+## Screenshot
+![Captura de Pantalla 2022-07-18 a las 11 08 50](https://user-images.githubusercontent.com/100128850/181705280-922a9dcf-9766-452b-832a-6510092a2766.png)
+
+
 
 ## Configurar la aplicación
 Tiene que configurar primero el .env.example con sus credenciales de Firebase. Después renombre el fichero para que pase a llamarse .env.
