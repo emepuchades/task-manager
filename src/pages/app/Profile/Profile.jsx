@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 import styled from 'styled-components'
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../../auth/AuthContext";
 import Avatar from '@mui/material/Avatar';
 
 function Profile() {
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   const [profile, setProfile] = useState([]);
   const [userName, setUserName] = useState('');
   const [biography, setBiography] = useState('');
@@ -27,13 +27,13 @@ function Profile() {
     }
     setDoc(doc(db, 'usersProfile', user.uid), userProfile)
   }
-  
+
   function validate() {
-    if(userName && biography) {
+    if (userName && biography) {
       updateProfile()
-    } else if(userName && !biography ){
+    } else if (userName && !biography) {
       alert('La biografía es necesaria')
-    } else if(!userName && biography ){
+    } else if (!userName && biography) {
       alert('El Nombre de usuario es necesario')
     }
   }

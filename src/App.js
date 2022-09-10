@@ -1,13 +1,13 @@
 import './App.css';
 import React, { createContext, useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { ProtectedRoute } from "./pages/auth/PrivateRoute";
 import { AuthProvider } from "./pages/auth/AuthContext";
 
-import Dashboard from './pages/app/Dashboard';
-import Project from './pages/app/Project';
+import Project from './pages/app/Project/Project';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import Main from './pages/app/Main';
 
 export const AppContext = createContext()
 
@@ -29,7 +29,7 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Main />
               </ProtectedRoute>
             }
           />

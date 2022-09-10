@@ -1,13 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import NavLeft from '../../components/NavLeft';
-import NavTop from '../../components/NavTop';
+import NavLeft from '../../../components/NavLeft';
+import NavTop from '../../../components/NavTop';
 import { useParams } from "react-router-dom";
 import { BsPlus } from "react-icons/bs";
 
-const Project = (props) => {
+function Project() {
   let { id } = useParams();
-  console.log('id', id)
 
   return (
     <Block>
@@ -21,7 +20,6 @@ const Project = (props) => {
     </Block>
   )
 }
-
 const Block = styled.div`
 
 `;

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
-import { db, app } from "../firebase";
+import { doc, onSnapshot, getDocs, collection } from "firebase/firestore";
+import { db } from "../firebase";
 import styled from 'styled-components'
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
@@ -12,34 +12,35 @@ import InputBase from '@mui/material/InputBase';
 import { AppContext } from "../App";
 import IconButton from '@mui/material/IconButton';
 import { Link } from "react-router-dom";
-import { BsBell, BsPerson, BsSearch } from "react-icons/bs";
+import { BsPerson, BsSearch } from "react-icons/bs";
 import { useAuth } from "../pages/auth/AuthContext";
 import Avatar from '@mui/material/Avatar';
 
 function NavTop() {
-    const { expand, menuState } = useContext(AppContext);
+    const { menuState } = useContext(AppContext);
     const { logout, user } = useAuth();
     const [boards, setBoards] = useState([]);
     const [isSearch, setIsSearch] = useState("");
     const [isProfile, setIsProfile] = useState("");
     const [profileUser, setProfileUser] = useState([]);
-    const [isNotifications, setIsNotifications] = useState([]);
     const [filteredContacts, setFilteredContacts] = useState([]);
 
     useEffect(() => {
         async function getBoards() {
-            onSnapshot(doc(db, "userBoards", user.uid), (doc) => {
-                setBoards(doc.data().boards)
-            });
+            let getGamesbd = await getDocs(collection(db, "userBoards", user.uid, "boards"))
+            setBoards(getGamesbd.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+            })))
         }
         getBoards()
         async function getProfile() {
             onSnapshot(doc(db, "usersProfile", user.uid), (doc) => {
                 setProfileUser(doc.data())
             });
-          }
-          getProfile()
-    }, []);
+        }
+        getProfile()
+    });
 
     useEffect(() => {
         setFilteredContacts(
@@ -48,7 +49,7 @@ function NavTop() {
                     board.name.toLowerCase().includes(isSearch.toLowerCase())
             )
         );
-    }, [isSearch]);
+    }, [isSearch, boards]);
 
     const handleLogout = async () => {
         try {
@@ -116,8 +117,8 @@ function NavTop() {
                         <ProfileSettings>
                             <List>
                                 <ListItem disablePadding>
-                                        <BsPerson className="icon-person" />
-                                        <ListItemText primary={profileUser ? profileUser.userName ? profileUser.userName : null : user.email} />
+                                    <BsPerson className="icon-person" />
+                                    <ListItemText primary={profileUser ? profileUser.userName ? profileUser.userName : null : user.email} />
                                 </ListItem>
                                 <Divider />
                                 <ListItemButton>
@@ -171,10 +172,7 @@ const Boards = styled.div`
         color: #111111;
     }
 `;
-const Text = styled.div`
-    font-size: 18px;
-    font-weight: bold;
-`;
+
 const Search = styled.div`
     margin: 0px 60px;
 `;
