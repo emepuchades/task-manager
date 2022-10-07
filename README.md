@@ -47,6 +47,15 @@ const firebaseConfig = {
 };
 ```
 
+## Enable Authentication
+
+You will need to enable two authentication patterns
+
+1) Google Account
+2) Email and password
+
+For more information about enabling authentication, click [here](https://firebase.google.com/docs/auth)
+
 
 
 ## Configuration
