@@ -33,7 +33,7 @@ function Main() {
       })))
     }
     getBoards()
-  })
+  }, [user.uid])
 
   async function addTodo() {
     const boardsRef = collection(db, "userBoards");

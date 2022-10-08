@@ -26,7 +26,7 @@ function Profile() {
       });
     }
     getProfile()
-  },)
+  },[user.uid])
 
   async function updateProfile() {
     const userProfile = {
