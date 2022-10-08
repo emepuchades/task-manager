@@ -40,7 +40,7 @@ function NavTop() {
             });
         }
         getProfile()
-    });
+    }, [user.uid]);
 
     useEffect(() => {
         setFilteredContacts(
