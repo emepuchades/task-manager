@@ -56,6 +56,11 @@ You will need to enable two authentication patterns
 
 For more information about enabling authentication, click [here](https://firebase.google.com/docs/auth)
 
+## Enable Firetore Database
+
+Go to Compilation > Firestore Database and enable a cloud store database for the project (test-based)
+
+For more information about enabling firestore database, click [here](https://firebase.google.com/docs/firestore/quickstart?hl=es&authuser=0)
 
 
 ## Configuration
