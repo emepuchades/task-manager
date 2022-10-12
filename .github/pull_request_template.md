@@ -1,5 +1,5 @@
 <!-- 
-Welcome, if you got ere, that means you are goig to make your first pull request, please add as much information as you can
+Welcome, if you got here, that means you are going to make your first pull request, please add as much information as you can
 to explain your changes
 -->
 # Task Manager Pull Request 📅

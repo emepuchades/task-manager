@@ -65,6 +65,10 @@ Switched to branch 'my-branch'
 
 At this point, you can now modify existing files or add new files to the project on your own branch.
 
+### 5. Use commitizen to give proper format to your commits
+
+After you add your files to staging, before making a conventional ```git commit```, just write ```git cz``` and you will prompted to fill in any required fields. Your commit messages will be formatted according to the standards defined.
+
 ### 5. Follow the Pull Request template of the project
 
 Make sure to add a brief description of your changes, screenshots and how-to-test steps
