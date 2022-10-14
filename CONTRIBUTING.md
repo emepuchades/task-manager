@@ -2,13 +2,11 @@
 
 ### 1. Give this Project a Star :
 
-It takes less than five seconds and help us to reach as many people as we can in the opensource community 
-
+It takes less than five seconds and help us to reach as many people as we can in the opensource community
 
 ### 2. Fork the repo :
 
 You can get your own fork/copy of this project [Task Manager](https://github.com/emepuchades/task-manager) by using the <kbd><b>Fork</b></kbd></a> button or clicking [this](https://github.com/emepuchades/task-manager).
-
 
 ### 3. Ready, Steady, Go... :
 
@@ -16,9 +14,11 @@ Once you have completed these steps, you are ready to start contributing
 by checking our [issues tab](https://github.com/emepuchades/task-manager/issues) and creating [pull requests](https://github.com/emepuchades/task-manager/pulls).
 
 # Steps to make changes and contribute using GIT!
-⚠️ Before you proceed make sure you have these installed : 
-- [NodeJS](https://nodejs.org/) version 16+ 
-- [NPM](https://npmjs.com/) version 8+
+
+⚠️ Before you proceed make sure you have these installed :
+
+-   [NodeJS](https://nodejs.org/) version 16+
+-   [NPM](https://npmjs.com/) version 8+
 
 To make your own local copy of the repository you would like to contribute to, let’s first open up a terminal window.
 
@@ -65,6 +65,10 @@ Switched to branch 'my-branch'
 
 At this point, you can now modify existing files or add new files to the project on your own branch.
 
-### 5. Follow the Pull Request template of the project
+### 5. CAUTION! Make sure to follow eslint and prettier rules
+
+Everytime you make changes, or you just create another .jsx or .js file, please make sure to run `npm run format` and after that `npm run lint`. We have configured eslint and prettier to format and lint our project files. Otherwise you will have ghost changes inside your pull request. Eslint and prettier as extensions on your local won't be enough 😐. We have our rules predefined. So please make sure to follow our format styling.
+
+### 6. Follow the Pull Request template of the project
 
 Make sure to add a brief description of your changes, screenshots and how-to-test steps

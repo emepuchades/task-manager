@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200&display=swap');
 
 .App {
-  height: 100vh;
+    height: 100vh;
 }
 
 body {
-  margin: 0;
-  font-family: 'Fira Sans', sans-serif;
-  font-size: 18px;
-  background-color: #F8F8F9;
+    margin: 0;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 18px;
+    background-color: #f8f8f9;
 }
