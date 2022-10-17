@@ -13,12 +13,12 @@ const Block = styled.div`
     .add-task {
         background-color: white;
     }
-`;
+`
 
 const Text = styled.div`
     font-size: 28px;
     margin-top: 40px;
-`;
+`
 
 const BlockBoard = styled.div`
     font-size: 28px;
@@ -26,8 +26,8 @@ const BlockBoard = styled.div`
     width: auto;
     display: table;
     .card {
-        display: flex;    
-        background-color: #FFFFFF;
+        display: flex;
+        background-color: #ffffff;
         border-radius: 10px;
         margin-top: 50px;
         padding: 40px;
@@ -38,14 +38,13 @@ const BlockBoard = styled.div`
         color: #111111;
         display: inline-table;
         :hover {
-            background-color:  #F0F0F3;
-    
+            background-color: #f0f0f3;
         }
     }
     .heartfill {
         color: red;
     }
-    .iconheart{
+    .iconheart {
         position: relative;
         right: 60px;
         width: 20px;
@@ -54,7 +53,7 @@ const BlockBoard = styled.div`
             color: red;
         }
     }
-`;
+`
 
 const CardText = styled.div`
     display: flex;
@@ -62,47 +61,47 @@ const CardText = styled.div`
     font-size: 18px;
     margin-left: 20px;
     width: 100%;
-`;
+`
 const CardEmpty = styled.div`
-    display: flex;    
-    background-color: #FFFFFF;
+    display: flex;
+    background-color: #ffffff;
     border-radius: 10px;
     margin-top: 50px;
     padding: 40px;
     width: 220px;
     border-radius: 10px;
     margin: 15px;
-    .icon-plus{
+    .icon-plus {
         width: 40px;
         height: 40px;
     }
     :hover {
-        background-color:  #F0F0F3;
+        background-color: #f0f0f3;
     }
-`;
+`
 
 const InputModal = styled.input`
     resize: none;
     border: none;
-    background: #F6F6F6;
+    background: #f6f6f6;
     border-radius: 10px;
     font-size: 16px;
     height: 40px;
     width: 200px;
     margin-bottom: 40px;
-`;
+`
 const ButtonModal = styled.button`
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 30px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border: none;
     border-radius: 10px;
     font-size: 16px;
-    box-shadow: 0px -4px 3px #f3f3f3
-`;
+    box-shadow: 0px -4px 3px #f3f3f3;
+`
 
 const Icon = styled.div`
     position: absolute;
@@ -113,20 +112,20 @@ const Icon = styled.div`
         width: 30px;
         height: 30px;
     }
-`;
+`
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  boxShadow: 24,
-  p: 4,
-  padding: '40px',
-  borderRadius: '10px',
-  backgroundColor: 'white'
-};
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    boxShadow: 24,
+    p: 4,
+    padding: '40px',
+    borderRadius: '10px',
+    backgroundColor: 'white',
+}
 
 export {
     Block,
@@ -137,5 +136,5 @@ export {
     InputModal,
     ButtonModal,
     Icon,
-    style
-};
+    style,
+}
