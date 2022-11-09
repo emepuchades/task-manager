@@ -15,7 +15,7 @@ Task Manager is a platform that allows the creation, edition, and overall manage
 
 Make sure to register by clicking on the image and start contributing! 😍💕
 
-<a href ="https://hacktoberfest.com/"><img align="center" src="https://user-images.githubusercontent.com/48018975/194628868-593044b2-390b-4d6f-9478-29c1493ad5d8.png"></img></a>
+<a href ="https://hacktoberfest.com/"><img align="center" src="https://user-images.githubusercontent.com/100128850/200891792-6c88e81b-ac5c-4b8b-b819-1c229fea8186.jpeg"></img></a>
 
 # Application setup
 
