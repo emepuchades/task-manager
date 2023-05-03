@@ -1,167 +1,151 @@
+import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from './AuthContext'
-import { Alert } from './Alert'
-import logo from '../../assets/images/logo-google.png'
+import Landing from '../../assets/images/landing.png'
+import logo from '../../assets/images/logo.png'
+import LoginComponent from './LoginComponent'
+import Register from './Register'
+import { AiFillGithub, AiOutlineFire } from "react-icons/ai";
+import { FaReact } from "react-icons/fa";
 
 function Login() {
-    const [user, setUser] = useState({
-        email: '',
-        password: '',
-    })
-    const { login, loginWithGoogle, resetPassword } = useAuth()
-    const [error, setError] = useState('')
-    const navigate = useNavigate()
 
-    const handleSubmit = async e => {
-        e.preventDefault()
-        setError('')
-        try {
-            await login(user.email, user.password)
-            navigate('/')
-        } catch (error) {
-            setError(error.message)
-        }
-    }
+  const [user, setUser] = useState(false)
 
-    const handleChange = ({ target: { value, name } }) =>
-        setUser({ ...user, [name]: value })
+  return (
+    <LoginBlocck>
+      <Nav>
+        <Logo src={logo} alt='Logo' width={50} />
+        <Title>TASK MANAGER</Title>
+        <NavRigth>
+          <Button onClick={() => setUser(!user)}>
+            {user ?
+              'Iniciar Sesion'
+              :
+              'Crear Cuenta'
+            }
+          </Button>
+        </NavRigth>
+      </Nav>
 
-    const handleGoogleSignin = async () => {
-        try {
-            await loginWithGoogle()
-            navigate('/')
-        } catch (error) {
-            setError(error.message)
-        }
-    }
+      <Block>
+        <Auth>
+          {user ?
+            <Register />
+            :
+            <LoginComponent />
+          }
+        </Auth>
+        <App>
+          <Image src={Landing} alt='landing' />
+        </App>
+      </Block>
 
-    const handleResetPassword = async e => {
-        e.preventDefault()
-        if (!user.email)
-            return setError(
-                'Te hemos enviado un email para que restaures la contreaseña'
-            )
-        try {
-            await resetPassword(user.email)
-            setError('Te hemos enviado un email! Mira tu correo')
-        } catch (error) {
-            setError(error.message)
-        }
-    }
+      <Footer>
+        <FooterP>
+          <a href='https://github.com/emepuchades'> <AiFillGithub /> eme puchades </a>|
+          <FaReact /> React + Firebase |
+          <AiOutlineFire />Task manager </FooterP>
+      </Footer>
 
-    return (
-        <Block>
-            {error && <Alert message={error} />}
-            <Form onSubmit={handleSubmit}>
-                <Title>Iniciar sesión</Title>
-
-                <ButtonGoogle onClick={handleGoogleSignin}>
-                    <Image src={logo} alt='Logo' /> <p>Accede con google</p>
-                </ButtonGoogle>
-
-                <TextInput> Email</TextInput>
-                <Input
-                    type='email'
-                    name='email'
-                    id='email'
-                    onChange={handleChange}
-                    placeholder='email'
-                />
-                <TextInput> Password </TextInput>
-                <Input
-                    type='password'
-                    name='password'
-                    id='password'
-                    onChange={handleChange}
-                />
-                <LinkPassword href='#!' onClick={handleResetPassword}>
-                    <Text>¿Olvidaste la contraseña?</Text>
-                </LinkPassword>
-
-                <Button type='submit'> Iniciar sesión </Button>
-                <Text>
-                    ¿No tienes cuenta? <Link to='/register'> Crear cuenta</Link>
-                </Text>
-            </Form>
-        </Block>
-    )
+    </LoginBlocck>
+  )
 }
 
 const Block = styled.div`
-    display: flex;
-    height: 100vh;
-    background-color: #e6edfa;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  height: 87vh;
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`
+const LoginBlocck = styled.div`
+
+`
+
+const Image = styled.img`
+  position: absolute;
+  right: 0;
+`
+
+const Button = styled.div`
+  cursor: default;
+  border: 1px solid black;
+  padding: 8px;
+  font-weight: bolder;
+  font-size: 16px;
+  border-radius: 5px;
 `
 
 const Title = styled.p`
-    font-size: 30px;
-    font-weight: bold;
-    color: #3b79d3;
+  margin-left: 20px;
+  font-size: 20px;
+  font-weight: bolder;
 `
-const Text = styled.p`
-    font-size: 15px;
-    &.textpassword {
-        width: 100%;
-    }
-`
-const TextInput = styled.p`
-    font-size: 18px;
-    width: 100%;
-`
-const Image = styled.img`
-    padding: 10px;
-    height: 20px;
-`
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff;
-    width: 340px;
-    height: 350px;
-    border-radius: 8px;
-    padding: 60px;
+const Logo = styled.img`
+  margin-left: 20px;
 `
 
-const Input = styled.input`
-    border: none;
-    outline: none;
-    border-radius: 8px;
-    width: 96%;
-    padding: 10px;
-    background-color: #ffffff;
+const NavRigth = styled.div`
+  position: absolute;
+  right: 50px;
 `
-const Button = styled.button`
-    width: 100%;
-    padding: 1em;
-    background: #3b79d3;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    color: #ffffff;
-    font-size: 15px;
-`
-const LinkPassword = styled.a`
-    width: 100%;
-`
-const ButtonGoogle = styled.button`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 0 auto;
+
+const Nav = styled.div`
   width: 100%;
-  background-color: white;
-  border: 1px solid #F1F1F1;
-  border-radius: 10px;
-  font-size: 16px;
-}
+  background-color: #ffffff;
+  height: 64px;
+  border-bottom: 1px solid #f1f1f1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
+const Footer = styled.div`
+  width: 100%;
+  background-color: #FDFCDC;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const FooterP = styled.div`
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    margin : 0px 10px;
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+  }
+`
+
+const Auth = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  height: 100%;
+`
+
+const App = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #3B79D3;
+  height: 100%;
 `
 
 export default Login

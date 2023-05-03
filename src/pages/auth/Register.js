@@ -60,13 +60,6 @@ function Register() {
 }
 
 const Block = styled.div`
-    display: flex;
-    height: 100vh;
-    background-color: #e6edfa;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
 `
 
 const Title = styled.p`
