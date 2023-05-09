@@ -38,7 +38,7 @@ const BlockBoard = styled.div`
         color: #111111;
         display: inline-table;
         :hover {
-            background-color: #f0f0f3;
+            background-color: #e8e8e8;
         }
     }
     .heartfill {
@@ -76,7 +76,7 @@ const CardEmpty = styled.div`
         height: 40px;
     }
     :hover {
-        background-color: #f0f0f3;
+        background-color: #e8e8e8;
     }
 `
 

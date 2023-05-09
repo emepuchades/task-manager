@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
-import Landing from '../../assets/images/landing.png'
+import Landing from '../../assets/images/landing2.png'
 import logo from '../../assets/images/logo.png'
 import LoginComponent from './LoginComponent'
 import Register from './Register'
@@ -66,8 +66,8 @@ const LoginBlocck = styled.div`
 `
 
 const Image = styled.img`
-  position: absolute;
-  right: 0;
+  max-width: 100%;
+  height: auto;
 `
 
 const Button = styled.div`

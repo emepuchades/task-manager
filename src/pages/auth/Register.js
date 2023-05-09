@@ -44,16 +44,13 @@ function Register() {
                 <TextInput> Contraseña </TextInput>
                 <Input
                     type='password'
+                    placeholder='password'
                     onChange={e =>
                         setUser({ ...user, password: e.target.value })
                     }
                 />
 
                 <Button> Register </Button>
-                <Text>
-                    ¿ Ya tienes una cuenta?{' '}
-                    <Link to='/login'> Inicia sesión </Link>
-                </Text>
             </Form>
         </Block>
     )
@@ -96,7 +93,7 @@ const Input = styled.input`
     border-radius: 8px;
     width: 96%;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: #F1F2F7;
 `
 const Button = styled.button`
     width: 100%;

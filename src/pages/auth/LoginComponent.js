@@ -74,6 +74,7 @@ function LoginComponent() {
                     type='password'
                     name='password'
                     id='password'
+                    placeholder='password'
                     onChange={handleChange}
                 />
                 <LinkPassword href='#!' onClick={handleResetPassword}>
@@ -81,9 +82,6 @@ function LoginComponent() {
                 </LinkPassword>
 
                 <Button type='submit'> Iniciar sesión </Button>
-                <Text>
-                    ¿No tienes cuenta? <Link to='/register'> Crear cuenta</Link>
-                </Text>
             </Form>
         </Block>
     )
@@ -129,7 +127,7 @@ const Input = styled.input`
     border-radius: 8px;
     width: 96%;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: #F1F2F7;
 `
 const Button = styled.button`
     width: 100%;

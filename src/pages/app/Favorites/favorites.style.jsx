@@ -30,7 +30,7 @@ const BlockBoard = styled.div`
         color: #111111;
         display: inline-table;
         :hover {
-            background-color: #f0f0f3;
+            background-color: #e8e8e8;
         }
     }
     .heartfill {

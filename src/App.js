@@ -4,10 +4,10 @@ import { Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from './pages/auth/PrivateRoute'
 import { AuthProvider } from './pages/auth/AuthContext'
 
-import Project from './pages/app/Project/Project'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import Main from './pages/app/Main'
+import Board from './pages/app/Board/Board'
 
 export const AppContext = createContext()
 
@@ -38,7 +38,7 @@ function App() {
                         path='/project/:id'
                         element={
                             <ProtectedRoute>
-                                <Project />
+                                <Board />
                             </ProtectedRoute>
                         }
                     />

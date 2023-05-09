@@ -99,6 +99,7 @@ function NavTop() {
                         }}
                     >
                         <InputBase
+                            className='input-search'
                             sx={{ ml: 1, flex: 1 }}
                             onChange={e => setIsSearch(e.target.value)}
                             placeholder='Buscar'
@@ -116,7 +117,7 @@ function NavTop() {
                             filteredContacts.length > 0 ? (
                                 filteredContacts.map(filterContact => (
                                     <Boards key={filterContact.name}>
-                                        <Link className='card' to='/project'>
+                                        <Link className='card' to={`/project/${filterContact.name}`}>
                                             {' '}
                                             {filterContact.name}{' '}
                                         </Link>
@@ -171,8 +172,20 @@ function NavTop() {
 const Block = styled.div`
     display: flex;
     align-items: center;
-    margin-left: 90px;
+    margin-left: 85px;
     height: 80px;
+    background-color: #ffffff;
+
+    .input-search {
+        background-color: #f3f3f3;
+        border-radius: 10px;
+        height: 35px;
+        text-indent: 15px;
+    }
+
+    input {
+        text-indent: 15px;
+    }
 `
 
 const Route = styled.div`

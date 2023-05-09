@@ -20,6 +20,7 @@ function NavLeft() {
         <Nav className={expand ? 'expand' : ''}>
             <MenuTop>
                 <Image src={logo} alt='Logo' />
+                
                 <Arrow onClick={() => changeExpand()}>
                     {expand ? (
                         <BsArrowBarLeft className='icon-sccore' />
@@ -27,6 +28,7 @@ function NavLeft() {
                         <BsArrowBarRight className='icon-sccore' />
                     )}
                 </Arrow>
+                
             </MenuTop>
             <Menu>
                 <Li
@@ -85,7 +87,6 @@ const Nav = styled.nav`
     color: black;
     &.expand {
         position: relative;
-        margin-right: 50px;
         width: 230px;
         min-width: 230px;
         .icon-sccore {
