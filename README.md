@@ -10,12 +10,8 @@ Task Manager is a platform that allows the creation, edition, and overall manage
 ## Screenshot
 
 ![Captura de Pantalla 2022-07-18 a las 11 08 50](https://user-images.githubusercontent.com/100128850/181705280-922a9dcf-9766-452b-832a-6510092a2766.png)
+![task-manager-dashboard](https://github.com/emepuchades/task-manager/assets/100128850/3eea063a-7418-45b7-8e01-03a7655711f0)
 
-# HACKTOBERFEST 2022 IS HERE! 🌈🧨
-
-Make sure to register by clicking on the image and start contributing! 😍💕
-
-<a href ="https://hacktoberfest.com/"><img align="center" src="https://user-images.githubusercontent.com/100128850/200891792-6c88e81b-ac5c-4b8b-b819-1c229fea8186.jpeg"></img></a>
 
 # Application setup
 
@@ -82,9 +78,3 @@ npm start
 ## Start contributing 💚👇
 
 For more information check the [CONTRIBUTING.md](https://github.com/emepuchades/task-manager/blob/main/CONTRIBUTING.md) file
-
-## Contributors 🙌
-
-<a href="https://github.com/emepuchades/task-manager/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=emepuchades/task-manager" />
-</a>
