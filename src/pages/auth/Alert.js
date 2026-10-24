@@ -1,10 +1,19 @@
+import styled from 'styled-components'
+
 export function Alert({ message }) {
     return (
-        <div
-            className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-2 text-center'
-            role='alert'
-        >
-            <span className='sm:inline block'>{message}</span>
-        </div>
+        <Block role='alert'>
+            <span>{message}</span>
+        </Block>
     )
 }
+
+const Block = styled.div`
+    margin-bottom: 20px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #a3352e;
+    background-color: #fdf3f2;
+    border: 1px solid #f3cfcb;
+    border-radius: var(--radius-md);
+`

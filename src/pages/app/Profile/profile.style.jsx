@@ -1,66 +1,92 @@
 import styled from 'styled-components'
 
 const Block = styled.div`
-    margin: 0 auto;
     position: relative;
-    width: 75%;
-    text-align: center;
-    margin-top: 80px;
+    max-width: 520px;
     .avatar {
         position: relative;
-        margin: 0 auto;
-        background-color: #3b79d3;
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+        font-size: 26px;
+        font-weight: 700;
         text-transform: uppercase;
-        font-size: 30px;
-        margin-bottom: 40px;
-        width: 100px;
-        height: 100px;
+        background-color: var(--color-primary);
     }
 `
 const Title = styled.div`
-    padding: 0px 34px;
-    font-size: 26px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 700;
+    word-break: break-word;
 `
 
 const Text = styled.div`
     &.subtitle {
-        font-weight: bolder;
-        margin: 40px;
+        margin: 4px 0 28px;
+        font-size: 14.5px;
+        color: var(--color-text-muted);
     }
 `
 
 const ProfileSettings = styled.div`
     position: relative;
-    display: inline-grid;
-    width: 300px;
-    text-align: initial;
+    display: grid;
+    width: 100%;
     .form-text {
-        margin-bottom: 20px;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
     }
 `
 
 const Input = styled.input`
-    border-radius: 5px;
-    height: 25px;
+    height: 42px;
+    padding: 0 12px;
     margin-bottom: 20px;
+    font-size: 14.5px;
+    background-color: var(--color-field);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    :focus {
+        background-color: var(--color-surface);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
 `
 
 const TextAerea = styled.textarea`
-    margin-bottom: 20px;
-    border-radius: 5px;
-    height: 80px;
+    height: 120px;
+    padding: 10px 12px;
+    margin-bottom: 24px;
+    font-size: 14.5px;
+    line-height: 1.4;
+    resize: vertical;
+    background-color: var(--color-field);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    :focus {
+        background-color: var(--color-surface);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
 `
 
 const Button = styled.button`
-    background: #3b79d3;
-    border-radius: 10px;
+    justify-self: start;
+    height: 42px;
+    padding: 0 22px;
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-md);
     font-weight: 600;
     color: #ffffff;
-    font-size: 15px;
-    padding: 10px;
-    text-align: center;
+    font-size: 14.5px;
     cursor: pointer;
+    :hover {
+        background-color: var(--color-primary-dark);
+    }
 `
 
 export { Block, Title, Text, ProfileSettings, Input, TextAerea, Button }
