@@ -9,20 +9,23 @@ import {
     CardIcon,
     CardText,
     CardEmpty,
+    CardSkeleton,
     BlockBoard,
 } from './favorites.style'
 
-function Favorites({ boards, fav }) {
+function Favorites({ boards, loading, fav }) {
     const favorites = boards ? boards.filter(board => board.fav) : []
 
     return (
         <>
             <Block>
                 <TextList>
-                    Favoritos <span>{favorites.length}</span>
+                    Favoritos {!loading && <span>{favorites.length}</span>}
                 </TextList>
-                <BlockBoard>
-                    {favorites.length > 0 ? (
+                <BlockBoard aria-busy={loading}>
+                    {loading ? (
+                        [0, 1].map(index => <CardSkeleton key={index} />)
+                    ) : favorites.length > 0 ? (
                         favorites.map((board, index) => (
                             <CardBoard
                                 key={index}

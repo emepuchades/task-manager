@@ -28,6 +28,7 @@ function Main() {
     const { user } = useAuth()
 
     const [boards, setBoards] = useState([])
+    const [loading, setLoading] = useState(true)
     const [open, setOpen] = useState(false)
     const [newProject, setNewProject] = useState(emptyProject)
 
@@ -48,6 +49,7 @@ function Main() {
                     ...doc.data(),
                 }))
             )
+            setLoading(false)
         }
         getBoards()
     }, [user.uid])
@@ -84,6 +86,11 @@ function Main() {
     }
 
     async function fav(boardInfo, isFav) {
+        setBoards(
+            boards.map(board =>
+                board.id === boardInfo.id ? { ...board, fav: isFav } : board
+            )
+        )
         const boardRef = doc(db, 'userBoards', user.uid, 'boards', boardInfo.id)
         await updateDoc(boardRef, {
             name: boardInfo.name,
@@ -98,6 +105,7 @@ function Main() {
                 return (
                     <Board
                         boards={boards}
+                        loading={loading}
                         open={open}
                         handleOpen={handleOpen}
                         handleClose={handleClose}
@@ -108,13 +116,16 @@ function Main() {
                     />
                 )
             case 2:
-                return <Favorites boards={boards} fav={fav} />
+                return (
+                    <Favorites boards={boards} loading={loading} fav={fav} />
+                )
             case 3:
                 return <Profile />
             default:
                 return (
                     <Home
                         boards={boards}
+                        loading={loading}
                         open={open}
                         handleOpen={handleOpen}
                         handleClose={handleClose}

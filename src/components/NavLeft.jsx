@@ -6,6 +6,7 @@ import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useAuth } from '../pages/auth/AuthContext'
 import logo from '../assets/images/logo.png'
+import Skeleton from './app/Skeleton/Skeleton'
 import {
     BsHouse,
     BsHeart,
@@ -21,6 +22,7 @@ function NavLeft() {
     const { user } = useAuth()
     const { id } = useParams()
     const [boards, setBoards] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const unsubscribe = onSnapshot(
@@ -32,6 +34,7 @@ function NavLeft() {
                         ...doc.data(),
                     }))
                 )
+                setLoading(false)
             }
         )
         return () => unsubscribe()
@@ -52,26 +55,23 @@ function NavLeft() {
             </MenuTop>
             <Menu>
                 <Li
+                    to='/'
                     onClick={() => setMenuState(0)}
                     className={menuState === 0 && !id ? 'focus' : null}
                 >
                     <BsHouse className='icon-search' />
-                    <Link to='/'>
-                        {' '}
-                        <Text>Inicio</Text>{' '}
-                    </Link>
+                    <Text>Inicio</Text>
                 </Li>
                 <Li
+                    to='/'
                     onClick={() => setMenuState(1)}
                     className={menuState === 1 && !id ? 'focus' : null}
                 >
                     <BsCollection className='icon-search' />
-                    <Link to='/'>
-                        {' '}
-                        <Text>Tableros</Text>{' '}
-                    </Link>
+                    <Text>Tableros</Text>
                 </Li>
                 <Li
+                    to='/'
                     onClick={() => setMenuState(2)}
                     className={menuState === 2 && !id ? 'focus' : null}
                 >
@@ -79,17 +79,22 @@ function NavLeft() {
                     <Text>Favoritos</Text>
                 </Li>
                 <Li
+                    to='/'
                     onClick={() => setMenuState(3)}
                     className={menuState === 3 && !id ? 'focus' : null}
                 >
                     <BsPerson className='icon-search' />
-                    <Link to='/'>
-                        {' '}
-                        <Text> Perfil </Text>{' '}
-                    </Link>
+                    <Text>Perfil</Text>
                 </Li>
             </Menu>
-            {boards.length > 0 ? (
+            {loading ? (
+                <Projects aria-busy='true'>
+                    <TextSection className='brand'>Proyectos</TextSection>
+                    {[0, 1, 2].map(index => (
+                        <ProjectSkeleton key={index} />
+                    ))}
+                </Projects>
+            ) : boards.length > 0 ? (
                 <Projects>
                     <TextSection className='brand'>Proyectos</TextSection>
                     {boards.map((board, index) => (
@@ -200,7 +205,7 @@ const MenuTop = styled.div`
     }
 `
 
-const Li = styled.div`
+const Li = styled(Link)`
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -208,6 +213,8 @@ const Li = styled.div`
     margin: 0 12px;
     padding: 0 16px;
     border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
     cursor: pointer;
     transition: background-color 0.15s, color 0.15s;
     .icon-search {
@@ -220,15 +227,15 @@ const Li = styled.div`
         color: var(--color-text);
         background-color: var(--color-hover);
     }
-    a {
-        text-decoration: none;
-        color: inherit;
+    :focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: -2px;
     }
     &.focus {
         color: var(--color-primary);
         background-color: var(--color-surface);
         box-shadow: var(--shadow-card);
-        a {
+        > div {
             color: var(--color-text);
             font-weight: 600;
         }
@@ -269,6 +276,12 @@ const Projects = styled.div`
             box-shadow: var(--shadow-card);
         }
     }
+`
+
+const ProjectSkeleton = styled(Skeleton)`
+    height: 40px;
+    margin: 0 12px;
+    border-radius: 12px;
 `
 
 const TextSection = styled.div`

@@ -87,6 +87,10 @@ const Button = styled.button`
     :hover {
         background-color: var(--color-primary-dark);
     }
+    :disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 `
 
 export { Block, Title, Text, ProfileSettings, Input, TextAerea, Button }

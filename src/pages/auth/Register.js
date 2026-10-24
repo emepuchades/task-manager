@@ -14,16 +14,19 @@ function Register() {
     })
 
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     const handleSubmit = async e => {
         e.preventDefault()
         setError('')
+        setLoading(true)
         try {
             await signup(user.email, user.password, user.username)
             navigate('/')
         } catch (error) {
             setError(error.message)
+            setLoading(false)
         }
     }
 
@@ -53,7 +56,9 @@ function Register() {
                     }
                 />
 
-                <Button> Crear cuenta </Button>
+                <Button disabled={loading}>
+                    {loading ? 'Creando cuenta…' : 'Crear cuenta'}
+                </Button>
             </Form>
         </Block>
     )
@@ -127,6 +132,10 @@ const Button = styled.button`
     cursor: pointer;
     :hover {
         background-color: var(--color-primary-dark);
+    }
+    :disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
     }
 `
 

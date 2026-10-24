@@ -15,11 +15,13 @@ import {
     CardIcon,
     CardText,
     CardEmpty,
+    CardSkeleton,
     ButtonNew,
 } from './home.style'
 
 function Home({
     boards,
+    loading,
     open,
     handleOpen,
     handleClose,
@@ -39,10 +41,14 @@ function Home({
                     </ButtonNew>
                 </Header>
                 <TextList>
-                    Proyectos <span>{boards.length}</span>
+                    Proyectos {!loading && <span>{boards.length}</span>}
                 </TextList>
-                <BlockBoard>
-                    {boards && boards.length > 0
+                <BlockBoard aria-busy={loading}>
+                    {loading
+                        ? [0, 1, 2, 3].map(index => (
+                              <CardSkeleton key={index} />
+                          ))
+                        : boards.length > 0
                         ? boards.map((board, index) => (
                               <CardBoard
                                   key={index}

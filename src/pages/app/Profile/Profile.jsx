@@ -18,6 +18,7 @@ function Profile() {
     const [profile, setProfile] = useState([])
     const [userName, setUserName] = useState('')
     const [biography, setBiography] = useState('')
+    const [saving, setSaving] = useState(false)
 
     useEffect(() => {
         async function getProfile() {
@@ -33,7 +34,15 @@ function Profile() {
             userName: userName || profile.userName,
             biography: biography || profile.biography,
         }
-        setDoc(doc(db, 'usersProfile', user.uid), userProfile)
+        setSaving(true)
+        try {
+            await setDoc(doc(db, 'usersProfile', user.uid), userProfile)
+        } catch (error) {
+            console.error(error.message)
+            alert('No se ha podido guardar el perfil')
+        } finally {
+            setSaving(false)
+        }
     }
 
     function validate() {
@@ -64,7 +73,9 @@ function Profile() {
                     placeholder={profile ? profile.biography : null}
                     onChange={e => setBiography(e.target.value)}
                 />
-                <Button onClick={() => validate()}>Guardar</Button>
+                <Button disabled={saving} onClick={() => validate()}>
+                    {saving ? 'Guardando…' : 'Guardar'}
+                </Button>
             </ProfileSettings>
         </Block>
     )

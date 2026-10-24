@@ -10,6 +10,7 @@ import { BsTrash } from 'react-icons/bs'
 import InputContainer from "../../../components/app/InputContainer/InputContainer";
 import List from "../../../components/app/List/List";
 import ModalDelete from "../../../components/app/ModalDelete/ModalDelete";
+import Skeleton from "../../../components/app/Skeleton/Skeleton";
 
 import StoreApi from "../../../utils/storeApi";
 import "./board.styles.css";
@@ -35,7 +36,8 @@ import { useAuth } from '../../auth/AuthContext'
 
 export default function Board() {
   const [lists, setLists] = useState([]);
-  const [boardName, setBoardName] = useState("");
+  const [boardName, setBoardName] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [openDelete, setOpenDelete] = useState(false);
   const { id } = useParams()
   const navigate = useNavigate();
@@ -51,6 +53,9 @@ export default function Board() {
   );
 
   useEffect(() => {
+    setLoading(true);
+    setBoardName(null);
+    setLists([]);
     const unsubscribeBoard = onSnapshot(
       doc(db, "userBoards", user.uid, "boards", id),
       (board) => {
@@ -70,6 +75,7 @@ export default function Board() {
           };
         })
       );
+      setLoading(false);
     });
     return () => {
       unsubscribeBoard();
@@ -230,8 +236,16 @@ export default function Board() {
       <NavLeft/>
       <NavTop />
       <Title className={expand ? 'expand' : 'container'}>
-        <TitleText>Proyecto: {boardName}</TitleText>
-        <ButtonDelete type="button" onClick={() => setOpenDelete(true)}>
+        {boardName === null ? (
+          <TitleSkeleton />
+        ) : (
+          <TitleText>Proyecto: {boardName}</TitleText>
+        )}
+        <ButtonDelete
+          type="button"
+          disabled={loading}
+          onClick={() => setOpenDelete(true)}
+        >
           <BsTrash />
           Eliminar proyecto
         </ButtonDelete>
@@ -259,14 +273,19 @@ export default function Board() {
                 <div
                   className="wrapper"
                   ref={provided.innerRef}
+                  aria-busy={loading}
                   {...provided.droppableProps}
                 >
-                  {lists.map((list, index) => {
-                    return <List list={list} key={list.id} index={index} />;
-                  })}
-                  <div>
-                    <InputContainer type="list" />
-                  </div>
+                  {loading
+                    ? [0, 1, 2].map((index) => <ColumnSkeleton key={index} />)
+                    : lists.map((list, index) => {
+                        return <List list={list} key={list.id} index={index} />;
+                      })}
+                  {!loading && (
+                    <div>
+                      <InputContainer type="list" />
+                    </div>
+                  )}
                   {provided.placeholder}
                 </div>
               )}
@@ -340,6 +359,24 @@ const ButtonDelete = styled.button`
       outline: 2px solid var(--color-danger);
       outline-offset: 2px;
     }
+
+    :disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+`
+
+const TitleSkeleton = styled(Skeleton)`
+    width: 280px;
+    max-width: 60%;
+    height: 34px;
+`
+
+const ColumnSkeleton = styled(Skeleton)`
+    width: 296px;
+    height: 240px;
+    margin-right: 16px;
+    border-radius: 16px;
 `
 
 const ContainerTask = styled.div`

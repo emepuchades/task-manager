@@ -12,16 +12,19 @@ function LoginComponent() {
     })
     const { login, loginWithGoogle, resetPassword } = useAuth()
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     const handleSubmit = async e => {
         e.preventDefault()
         setError('')
+        setLoading(true)
         try {
             await login(user.email, user.password)
             navigate('/')
         } catch (error) {
             setError(error.message)
+            setLoading(false)
         }
     }
 
@@ -86,7 +89,9 @@ function LoginComponent() {
                     <Text>¿Olvidaste la contraseña?</Text>
                 </LinkPassword>
 
-                <Button type='submit'> Iniciar sesión </Button>
+                <Button type='submit' disabled={loading}>
+                    {loading ? 'Entrando…' : 'Iniciar sesión'}
+                </Button>
             </Form>
         </Block>
     )
@@ -178,6 +183,10 @@ const Button = styled.button`
     cursor: pointer;
     :hover {
         background-color: var(--color-primary-dark);
+    }
+    :disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
     }
 `
 const LinkPassword = styled.a`

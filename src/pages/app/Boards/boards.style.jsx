@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Skeleton from '../../../components/app/Skeleton/Skeleton'
 
 const Block = styled.div`
     .bsx {
@@ -129,6 +130,11 @@ const CardEmpty = styled.div`
     border-radius: var(--radius-lg);
 `
 
+const CardSkeleton = styled(Skeleton)`
+    height: 150px;
+    border-radius: var(--radius-lg);
+`
+
 const ButtonNew = styled.button`
     display: flex;
     align-items: center;
@@ -164,5 +170,6 @@ export {
     CardIcon,
     CardText,
     CardEmpty,
+    CardSkeleton,
     ButtonNew,
 }
