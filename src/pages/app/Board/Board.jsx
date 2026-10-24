@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AppContext } from '../../../App'
 
 import { v4 as uuid } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from 'styled-components'
+import { BsTrash } from 'react-icons/bs'
 
 import InputContainer from "../../../components/app/InputContainer/InputContainer";
 import List from "../../../components/app/List/List";
+import ModalDelete from "../../../components/app/ModalDelete/ModalDelete";
 
 import StoreApi from "../../../utils/storeApi";
 import "./board.styles.css";
@@ -24,6 +26,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 
 import NavLeft from '../../../components/NavLeft'
@@ -33,7 +36,9 @@ import { useAuth } from '../../auth/AuthContext'
 export default function Board() {
   const [lists, setLists] = useState([]);
   const [boardName, setBoardName] = useState("");
+  const [openDelete, setOpenDelete] = useState(false);
   const { id } = useParams()
+  const navigate = useNavigate();
   const { expand } = useContext(AppContext)
   const { user } = useAuth();
   const listsRef = collection(
@@ -147,6 +152,16 @@ export default function Board() {
     });
   };
 
+  const deleteProject = async () => {
+    const batch = writeBatch(db);
+    lists.forEach((list) => {
+      batch.delete(doc(listsRef, list.id));
+    });
+    batch.delete(doc(db, "userBoards", user.uid, "boards", id));
+    await batch.commit();
+    navigate("/");
+  };
+
   const deleteList = async (listId) => {
     await deleteDoc(doc(listsRef, listId));
   };
@@ -214,7 +229,19 @@ export default function Board() {
     <Block>
       <NavLeft/>
       <NavTop />
-      <Title className={expand ? 'expand' : 'container'}>Proyecto: {boardName}</Title>
+      <Title className={expand ? 'expand' : 'container'}>
+        <TitleText>Proyecto: {boardName}</TitleText>
+        <ButtonDelete type="button" onClick={() => setOpenDelete(true)}>
+          <BsTrash />
+          Eliminar proyecto
+        </ButtonDelete>
+      </Title>
+      <ModalDelete
+        open={openDelete}
+        handleClose={() => setOpenDelete(false)}
+        projectName={boardName}
+        deleteProject={deleteProject}
+      />
       <ContainerTask className={expand ? 'expand' : 'container'}>
         <StoreApi.Provider
           value={{
@@ -253,11 +280,13 @@ export default function Board() {
 }
 
 const Block = styled.div``
-const Title = styled.h3`
+const Title = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin: 0 var(--gap-panel) 0 var(--nav-width);
     padding: 24px 32px 4px;
-    font-size: 24px;
-    font-weight: 700;
     background-color: var(--color-surface);
     transition: margin-left 0.15s ease;
 
@@ -267,6 +296,49 @@ const Title = styled.h3`
 
     &.expand {
       margin-left: var(--nav-width-expand);
+    }
+`
+
+const TitleText = styled.h3`
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 24px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`
+
+const ButtonDelete = styled.button`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    height: 38px;
+    padding: 0 14px;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    :hover {
+      color: var(--color-danger);
+      background-color: var(--color-coral-soft);
+      border-color: var(--color-coral-soft);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-danger);
+      outline-offset: 2px;
     }
 `
 
