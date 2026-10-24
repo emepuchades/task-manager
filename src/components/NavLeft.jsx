@@ -96,9 +96,9 @@ function NavLeft() {
                         <Link
                             key={board.id}
                             className={`project color-${index % 6} ${
-                                id === board.name ? 'focus' : ''
+                                id === board.id ? 'focus' : ''
                             }`}
-                            to={`/project/${board.name}`}
+                            to={`/project/${board.id}`}
                         >
                             <ProjectIcon>{board.name[0]}</ProjectIcon>
                             <Text>{board.name}</Text>

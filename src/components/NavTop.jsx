@@ -125,7 +125,7 @@ function NavTop() {
                             filteredContacts.length > 0 ? (
                                 filteredContacts.map(filterContact => (
                                     <Boards key={filterContact.name}>
-                                        <Link className='card' to={`/project/${filterContact.name}`}>
+                                        <Link className='card' to={`/project/${filterContact.id}`}>
                                             {' '}
                                             {filterContact.name}{' '}
                                         </Link>

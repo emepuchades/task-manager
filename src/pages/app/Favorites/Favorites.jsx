@@ -30,7 +30,7 @@ function Favorites({ boards, fav }) {
                             >
                                 <Link
                                     className='card'
-                                    to={`/project/${board.name}`}
+                                    to={`/project/${board.id}`}
                                 >
                                     <CardCover>
                                         <CardIcon>{board.name[0]}</CardIcon>

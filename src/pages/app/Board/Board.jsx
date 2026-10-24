@@ -28,15 +28,35 @@ import {
 
 import NavLeft from '../../../components/NavLeft'
 import NavTop from '../../../components/NavTop'
+import { useAuth } from '../../auth/AuthContext'
 
 export default function Board() {
   const [lists, setLists] = useState([]);
+  const [boardName, setBoardName] = useState("");
   const { id } = useParams()
   const { expand } = useContext(AppContext)
+  const { user } = useAuth();
+  const listsRef = collection(
+    db,
+    "userBoards",
+    user.uid,
+    "boards",
+    id,
+    "lists"
+  );
 
   useEffect(() => {
-    const q = query(collection(db, "lists"), orderBy("timestamp", "asc"));
-    onSnapshot(q, (snapShot) => {
+    const unsubscribeBoard = onSnapshot(
+      doc(db, "userBoards", user.uid, "boards", id),
+      (board) => {
+        setBoardName(board.exists() ? board.data().name : "");
+      }
+    );
+    const q = query(
+      collection(db, "userBoards", user.uid, "boards", id, "lists"),
+      orderBy("timestamp", "asc")
+    );
+    const unsubscribeLists = onSnapshot(q, (snapShot) => {
       setLists(
         snapShot.docs.map((doc) => {
           return {
@@ -46,7 +66,11 @@ export default function Board() {
         })
       );
     });
-  }, []);
+    return () => {
+      unsubscribeBoard();
+      unsubscribeLists();
+    };
+  }, [user.uid, id]);
 
   const addMoreCard = async (title, listId) => {
     if (!title) {
@@ -57,7 +81,7 @@ export default function Board() {
       id: newCardId,
       title,
     };
-    const listRef = doc(db, "lists", listId);
+    const listRef = doc(listsRef, listId);
 
     await updateDoc(listRef, {
       cards: arrayUnion(newCard),
@@ -65,7 +89,7 @@ export default function Board() {
   };
 
   const removeCard = async (index, listId, cardId) => {
-    const listRef = doc(db, "lists", listId);
+    const listRef = doc(listsRef, listId);
 
     lists.forEach(async (list) => {
       if (list.id === listId) {
@@ -79,7 +103,7 @@ export default function Board() {
   };
 
   const updateCardTitle = (title, index, listId, cardId) => {
-    const listRef = doc(db, "lists", listId);
+    const listRef = doc(listsRef, listId);
 
     lists.forEach(async (list) => {
       if (list.id === listId) {
@@ -102,7 +126,7 @@ export default function Board() {
     if (!title) {
       return;
     }
-    await addDoc(collection(db, "lists"), {
+    await addDoc(listsRef, {
       title,
       cards: [],
       timestamp,
@@ -110,7 +134,7 @@ export default function Board() {
   };
 
   const updateListTitle = (title, listId) => {
-    const listRef = doc(db, "lists", listId);
+    const listRef = doc(listsRef, listId);
 
     lists.forEach(async (list) => {
       if (list.id === listId) {
@@ -124,7 +148,7 @@ export default function Board() {
   };
 
   const deleteList = async (listId) => {
-    await deleteDoc(doc(db, "lists", listId));
+    await deleteDoc(doc(listsRef, listId));
   };
 
   const onDragEnd = async (result) => {
@@ -135,8 +159,8 @@ export default function Board() {
     }
 
     if (type === "list") {
-      const destinationRef = doc(db, "lists", lists[destination.index].id);
-      const sourceRef = doc(db, "lists", lists[source.index].id);
+      const destinationRef = doc(listsRef, lists[destination.index].id);
+      const sourceRef = doc(listsRef, lists[source.index].id);
       await updateDoc(destinationRef, {
         timestamp: lists[source.index].timestamp,
       });
@@ -158,7 +182,7 @@ export default function Board() {
         }
         return card;
       });
-      const listRef = doc(db, "lists", destination.droppableId);
+      const listRef = doc(listsRef, destination.droppableId);
       await updateDoc(listRef, {
         cards: updatedCards,
       });
@@ -171,14 +195,14 @@ export default function Board() {
         (card) => card.id === draggableId
       )[0];
 
-      const sourceListRef = doc(db, "lists", source.droppableId);
+      const sourceListRef = doc(listsRef, source.droppableId);
 
       sourceList.cards.splice(source.index, 1);
       await updateDoc(sourceListRef, {
         cards: sourceList.cards,
       });
 
-      const destinationListRef = doc(db, "lists", destination.droppableId);
+      const destinationListRef = doc(listsRef, destination.droppableId);
       destinationList.cards.splice(destination.index, 0, draggingCard);
 
       await updateDoc(destinationListRef, {
@@ -190,7 +214,7 @@ export default function Board() {
     <Block>
       <NavLeft/>
       <NavTop />
-      <Title className={expand ? 'expand' : 'container'}>Proyecto: {id}</Title>
+      <Title className={expand ? 'expand' : 'container'}>Proyecto: {boardName}</Title>
       <ContainerTask className={expand ? 'expand' : 'container'}>
         <StoreApi.Provider
           value={{

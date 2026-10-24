@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../App'
 import styled from 'styled-components'
 
-import { db } from '../../firebase'
+import { db, timestamp } from '../../firebase'
 import { collection, getDocs, addDoc, doc, updateDoc } from 'firebase/firestore'
 import { useAuth } from '../auth/AuthContext'
 
@@ -12,6 +12,8 @@ import Home from './Home/Home'
 import Board from './Boards/Boards'
 import Favorites from './Favorites/Favorites'
 import Profile from './Profile/Profile'
+
+const defaultLists = ['Por hacer', 'En curso', 'Hecho']
 
 function Main() {
     const { menuState, expand } = useContext(AppContext)
@@ -41,10 +43,20 @@ function Main() {
 
     async function addTodo() {
         const boardsRef = collection(db, 'userBoards')
-        await addDoc(collection(boardsRef, user.uid, 'boards'), {
-            name: newProject.name,
-            fav: false,
-        })
+        const boardRef = await addDoc(
+            collection(boardsRef, user.uid, 'boards'),
+            {
+                name: newProject.name,
+                fav: false,
+            }
+        )
+        for (const title of defaultLists) {
+            await addDoc(collection(boardRef, 'lists'), {
+                title,
+                cards: [],
+                timestamp,
+            })
+        }
         getBoards()
         handleClose()
     }
