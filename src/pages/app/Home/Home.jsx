@@ -8,10 +8,16 @@ import Modal from '@mui/material/Modal'
 
 import {
     Block,
+    Header,
     BlockBoard,
     Text,
+    TextList,
+    CardBoard,
+    CardCover,
+    CardIcon,
     CardText,
     CardEmpty,
+    ButtonNew,
     InputModal,
     ButtonModal,
     Icon,
@@ -31,20 +37,30 @@ function Home({
     return (
         <>
             <Block>
-                <Text>👋 ¡Hola, empieza a crear tareas con Task Manager!</Text>
-                <BlockBoard>
-                    <CardEmpty onClick={() => handleOpen()}>
+                <Header>
+                    <Text>👋 ¡Hola, empieza a crear tareas con Task Manager!</Text>
+                    <ButtonNew onClick={() => handleOpen()}>
                         <BsPlus className='icon-plus' />
-                        <CardText>Nuevo projecto</CardText>
-                    </CardEmpty>
-                    {boards
+                        Nuevo proyecto
+                    </ButtonNew>
+                </Header>
+                <TextList>
+                    Proyectos <span>{boards.length}</span>
+                </TextList>
+                <BlockBoard>
+                    {boards && boards.length > 0
                         ? boards.map((board, index) => (
-                              <>
+                              <CardBoard
+                                  key={index}
+                                  className={`color-${index % 6}`}
+                              >
                                   <Link
                                       className='card'
                                       to={`/project/${board.name}`}
-                                      key={index}
                                   >
+                                      <CardCover>
+                                          <CardIcon>{board.name[0]}</CardIcon>
+                                      </CardCover>
                                       <CardText>{board.name}</CardText>
                                   </Link>
                                   {board.fav ? (
@@ -58,9 +74,14 @@ function Home({
                                           onClick={() => fav(board, true)}
                                       />
                                   )}
-                              </>
+                              </CardBoard>
                           ))
-                        : null}
+                        : (
+                              <CardEmpty>
+                                  Aún no tienes proyectos. Crea el primero con
+                                  «Nuevo proyecto».
+                              </CardEmpty>
+                          )}
 
                     <Modal
                         open={open}
@@ -86,7 +107,7 @@ function Home({
                             >
                                 <InputModal
                                     type='text'
-                                    placeholder='Titulo del proyecto'
+                                    placeholder='Título del proyecto'
                                     value={newProject.name}
                                     onChange={event =>
                                         setNewProject({
