@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import { BsX, BsHeart, BsHeartFill, BsPlus } from 'react-icons/bs'
+import { BsHeart, BsHeartFill, BsPlus } from 'react-icons/bs'
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Modal from '@mui/material/Modal'
+import ModalProject from '../../../components/app/ModalProject/ModalProject'
 
 import {
     Block,
@@ -18,10 +16,6 @@ import {
     CardText,
     CardEmpty,
     ButtonNew,
-    InputModal,
-    ButtonModal,
-    Icon,
-    style,
 } from './boards.style'
 
 function Boards({
@@ -83,45 +77,13 @@ function Boards({
                               </CardEmpty>
                           )}
 
-                    <Modal
+                    <ModalProject
                         open={open}
-                        onClose={() => handleClose()}
-                        aria-labelledby='modal-modal-title'
-                        aria-describedby='modal-modal-description'
-                        className='add-task'
-                    >
-                        <Box sx={style}>
-                            <Typography
-                                id='modal-modal-title'
-                                variant='h6'
-                                component='h2'
-                            >
-                                Crear tablero
-                                <Icon onClick={() => handleClose()}>
-                                    <BsX />
-                                </Icon>
-                            </Typography>
-                            <Typography
-                                id='modal-modal-description'
-                                sx={{ mt: 2 }}
-                            >
-                                <InputModal
-                                    type='text'
-                                    placeholder='Título del proyecto'
-                                    value={newProject.name}
-                                    onChange={event =>
-                                        setNewProject({
-                                            name: event.target.value,
-                                            fav: false,
-                                        })
-                                    }
-                                />
-                                <ButtonModal onClick={() => addTodo()}>
-                                    Crear
-                                </ButtonModal>
-                            </Typography>
-                        </Box>
-                    </Modal>
+                        handleClose={handleClose}
+                        newProject={newProject}
+                        setNewProject={setNewProject}
+                        addTodo={addTodo}
+                    />
                 </BlockBoard>
             </Block>
         </>

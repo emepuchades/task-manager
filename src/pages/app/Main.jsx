@@ -12,8 +12,9 @@ import Home from './Home/Home'
 import Board from './Boards/Boards'
 import Favorites from './Favorites/Favorites'
 import Profile from './Profile/Profile'
+import projectTemplates from '../../utils/projectTemplates'
 
-const defaultLists = ['Por hacer', 'En curso', 'Hecho']
+const emptyProject = { name: '', fav: false, lists: projectTemplates[0].lists }
 
 function Main() {
     const { menuState, expand } = useContext(AppContext)
@@ -21,10 +22,13 @@ function Main() {
 
     const [boards, setBoards] = useState([])
     const [open, setOpen] = useState(false)
-    const [newProject, setNewProject] = useState({ name: '', fav: false })
+    const [newProject, setNewProject] = useState(emptyProject)
 
     const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+    const handleClose = () => {
+        setOpen(false)
+        setNewProject(emptyProject)
+    }
 
     useEffect(() => {
         async function getBoards() {
@@ -46,11 +50,11 @@ function Main() {
         const boardRef = await addDoc(
             collection(boardsRef, user.uid, 'boards'),
             {
-                name: newProject.name,
+                name: newProject.name.trim(),
                 fav: false,
             }
         )
-        for (const title of defaultLists) {
+        for (const title of newProject.lists) {
             await addDoc(collection(boardRef, 'lists'), {
                 title,
                 cards: [],
