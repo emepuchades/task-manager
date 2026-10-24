@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from './AuthContext'
 import { Alert } from './Alert'
 import logo from '../../assets/images/logo-google.png'
