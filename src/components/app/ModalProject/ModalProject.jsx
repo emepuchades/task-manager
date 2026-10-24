@@ -23,6 +23,7 @@ import {
     TemplateText,
     Preview,
     PreviewColumn,
+    TextError,
     Footer,
     ButtonCancel,
     ButtonCreate,
@@ -37,20 +38,33 @@ function ModalProject({
     addTodo,
 }) {
     const [creating, setCreating] = useState(false)
+    const [error, setError] = useState('')
     const isNameEmpty = !newProject.name.trim()
+
+    function close() {
+        setError('')
+        handleClose()
+    }
 
     async function create(event) {
         event.preventDefault()
         if (isNameEmpty || creating) return
         setCreating(true)
-        await addTodo()
-        setCreating(false)
+        setError('')
+        try {
+            await addTodo()
+        } catch (error) {
+            console.error(error.message)
+            setError('No se ha podido crear el proyecto. Inténtalo de nuevo.')
+        } finally {
+            setCreating(false)
+        }
     }
 
     return (
         <Modal
             open={open}
-            onClose={() => handleClose()}
+            onClose={() => close()}
             aria-labelledby='modal-project-title'
             aria-describedby='modal-project-description'
             slotProps={{ backdrop }}
@@ -66,7 +80,7 @@ function ModalProject({
                     <Icon
                         type='button'
                         aria-label='Cerrar'
-                        onClick={() => handleClose()}
+                        onClick={() => close()}
                     >
                         <BsX />
                     </Icon>
@@ -145,11 +159,10 @@ function ModalProject({
                         ))}
                     </Templates>
 
+                    {error && <TextError role='alert'>{error}</TextError>}
+
                     <Footer>
-                        <ButtonCancel
-                            type='button'
-                            onClick={() => handleClose()}
-                        >
+                        <ButtonCancel type='button' onClick={() => close()}>
                             Cancelar
                         </ButtonCancel>
                         <ButtonCreate

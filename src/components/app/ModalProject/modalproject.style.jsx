@@ -183,6 +183,16 @@ const PreviewColumn = styled.span`
     }
 `
 
+const TextError = styled.p`
+    margin: 20px 0 0;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    color: #a3352e;
+    background-color: #fdf3f2;
+    border: 1px solid #f3cfcb;
+    border-radius: var(--radius-md);
+`
+
 const Footer = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -256,6 +266,7 @@ export {
     TemplateText,
     Preview,
     PreviewColumn,
+    TextError,
     Footer,
     ButtonCancel,
     ButtonCreate,

@@ -2,8 +2,15 @@ import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../App'
 import styled from 'styled-components'
 
-import { db, timestamp } from '../../firebase'
-import { collection, getDocs, addDoc, doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
+import {
+    collection,
+    getDocs,
+    doc,
+    updateDoc,
+    writeBatch,
+    Timestamp,
+} from 'firebase/firestore'
 import { useAuth } from '../auth/AuthContext'
 
 import NavLeft from '../../components/NavLeft'
@@ -46,21 +53,20 @@ function Main() {
     }, [user.uid])
 
     async function addTodo() {
-        const boardsRef = collection(db, 'userBoards')
-        const boardRef = await addDoc(
-            collection(boardsRef, user.uid, 'boards'),
-            {
-                name: newProject.name.trim(),
-                fav: false,
-            }
-        )
-        for (const title of newProject.lists) {
-            await addDoc(collection(boardRef, 'lists'), {
+        const boardRef = doc(collection(db, 'userBoards', user.uid, 'boards'))
+        const batch = writeBatch(db)
+        batch.set(boardRef, {
+            name: newProject.name.trim(),
+            fav: false,
+        })
+        newProject.lists.forEach((title, index) => {
+            batch.set(doc(collection(boardRef, 'lists')), {
                 title,
                 cards: [],
-                timestamp,
+                timestamp: Timestamp.fromMillis(Date.now() + index),
             })
-        }
+        })
+        await batch.commit()
         getBoards()
         handleClose()
     }
