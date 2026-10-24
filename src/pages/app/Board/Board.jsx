@@ -230,24 +230,34 @@ export default function Board() {
 
 const Block = styled.div``
 const Title = styled.h3`
-    margin-left: 121px;
+    margin: 0 var(--gap-panel) 0 var(--nav-width);
+    padding: 24px 32px 4px;
+    font-size: 24px;
+    font-weight: 700;
+    background-color: var(--color-surface);
+    transition: margin-left 0.15s ease;
 
     &.container {
-      margin-left: 122px
+      margin-left: var(--nav-width);
     }
 
     &.expand {
-      margin-left: 256px;
+      margin-left: var(--nav-width-expand);
     }
 `
 
 const ContainerTask = styled.div`
+    min-height: calc(100vh - var(--top-height) - var(--gap-panel) * 2 - 64px);
+    margin: 0 var(--gap-panel) var(--gap-panel) 0;
+    background-color: var(--color-surface);
+    border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+    transition: margin-left 0.15s ease;
 
     &.container {
-        margin-left: 5px;
+        margin-left: var(--nav-width);
     }
 
     &.expand {
-        margin-left: 140px;
+        margin-left: var(--nav-width-expand);
     }
 `

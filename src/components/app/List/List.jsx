@@ -12,9 +12,16 @@ export default function List({ list, index }) {
     <Draggable draggableId={list.id} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} ref={provided.innerRef}>
-          <div className="list-cards" {...provided.dragHandleProps}>
+          <div
+            className={`list-cards color-${index % 6}`}
+            {...provided.dragHandleProps}
+          >
             <div className="title-list">
-              <Title title={list.title} listId={list.id} />
+              <Title
+                title={list.title}
+                listId={list.id}
+                count={list.cards.length}
+              />
             </div>
             <div className="container-cards">
               <Droppable droppableId={list.id} type="task">

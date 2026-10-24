@@ -6,7 +6,7 @@ import storeApi from "../../../utils/storeApi";
 
 import "./title.styles.css";
 
-export default function Title({ title, listId }) {
+export default function Title({ title, listId, count }) {
   const [open, setOpen] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
@@ -43,6 +43,7 @@ export default function Title({ title, listId }) {
           <h2 onClick={() => setOpen(!open)} className="editable-title">
             {title}
           </h2>
+          <span className="count-title">{count}</span>
           <button
             className="list-button"
             onClick={() => setOpenOptions(!openOptions)}

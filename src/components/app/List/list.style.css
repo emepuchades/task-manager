@@ -1,20 +1,22 @@
 .list-cards {
-  width: 300px;
-  margin-right: 0.5rem;
-  border-radius: 5px;
+  width: 296px;
+  min-width: 296px;
+  margin-right: 16px;
+  padding: 10px;
+  border-radius: 16px;
+  background-color: var(--color-column);
 
   .title-list {
-    padding: 1rem 1rem 0;
+    padding: 4px 2px 10px 4px;
   }
 
   .container-cards {
     overflow-x: auto;
-    max-height: 55vh;
-    padding: 0 1rem;
+    max-height: calc(100vh - 300px);
   }
 
   .card-container {
     overflow-y: hidden;
-    margin: 0.5rem 0;
+    min-height: 8px;
   }
 }

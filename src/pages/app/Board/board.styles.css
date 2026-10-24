@@ -1,8 +1,21 @@
 .wrapper {
-    margin: 0 auto;
-    padding: 0 0.5rem;
     display: flex;
-    min-height: calc(100vh - 5rem);
-    overflow-y: auto;
-    margin-left: 108px;
+    align-items: flex-start;
+    min-height: calc(100vh - var(--top-height) - var(--gap-panel) * 2 - 64px);
+    padding: 16px 32px 24px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.wrapper:hover {
+    scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.wrapper::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.wrapper:hover::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
 }
