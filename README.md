@@ -1,38 +1,77 @@
-# <img align="center" width="50"  src="https://user-images.githubusercontent.com/100128850/179488136-2ed274ee-b2ef-4187-a155-ab813bf6e8fb.png"> Task Manager
+# Task Manager
 
-Task Manager is a platform that allows the creation, edition, and overall management of your tasks.
+> My first complete web app (2022), redesigned in 2026. Kanban boards for small projects, with Google or email sign-in and data in the cloud.
+
+**Live demo:** https://task-manager-mp.vercel.app · UI in Spanish
+
+![Task Manager in 2026: board with colour-coded lists, card counters and a sidebar with your projects](assets/despues-tablero.webp)
+
+## Why this repo exists
+
+I built Task Manager in 2022 while learning React: it was my first app with real users, authentication and a database. In 2026 I went back to it with four more years of experience and gave it a proper design pass, keeping the original idea and the Firebase backend.
+
+It stays public as it is, with its history, because it shows the distance between where I started and how I work now.
+
+## Then and now
+
+| 2022 | 2026 |
+| --- | --- |
+| ![Board in 2022](assets/antes-tablero.webp) | ![Board in 2026](assets/despues-tablero.webp) |
+| ![Login in 2022](assets/antes-login.webp) | ![Login in 2026](assets/despues-login.webp) |
+
+![Home in 2026: your projects, with covers and a favourites counter](assets/despues-inicio.webp)
+
+**Where it started**
+
+- Create React App as the base.
+- Four UI libraries at once: MUI 4, MUI 5, React Bootstrap and styled-components.
+- Default component styles, no palette and no spacing system.
+- Global state in Redux with redux-persist.
+
+**What the 2026 pass changed**
+
+- A design system of its own: colour palette, spacing and typography tokens.
+- New layout: sidebar with your projects and the content inside a single panel.
+- Home with project cards, covers, a favourites counter and empty states.
+- Kanban columns redesigned, with a colour per status and a card counter.
+- New login screen, profile form, alerts and loading states.
+- New-project modal with column templates, and every project keeps its own lists.
+
+**What I would do differently today**
+
+- One UI library, chosen before writing the first component.
+- Tokens first, components second. Doing it the other way round is what made the 2022 version inconsistent.
+- Less global state: most of what lived in Redux belongs to the component that uses it.
+
+## Features
+
+- Projects with Kanban boards: lists and cards you drag between columns.
+- Column templates when you create a project.
+- Favourites, covers and empty states that tell you what to do next.
+- Sign in with Google or with email and password.
+- Projects, lists, cards and favourites stored per user in Firestore.
 
 ## Tech stack
 
--   Reactjs
--   Firebase
+| | |
+| --- | --- |
+| UI | React, React Router, MUI, styled-components |
+| State | Redux Toolkit, redux-persist |
+| Backend | Firebase Authentication and Firestore |
+| Drag and drop | react-beautiful-dnd |
+| Tooling | Create React App, ESLint, Prettier |
 
-## Screenshot
+## Getting started
 
-![Captura de Pantalla 2022-07-18 a las 11 08 50](https://user-images.githubusercontent.com/100128850/181705280-922a9dcf-9766-452b-832a-6510092a2766.png)
-![task-manager-dashboard](https://github.com/emepuchades/task-manager/assets/100128850/3eea063a-7418-45b7-8e01-03a7655711f0)
+The app needs a Firebase project of your own. Five minutes:
 
-
-# Application setup
-
-## Firebase setup
-
-1. Go to [Firebase](https://firebase.google.com/) and create your Firebase account
-2. Then click on Add project
-3. For this project you will not need to enable Google Analytics, but it's optional
-4. Click on Add Firebase
-
-For more information, go to [First steps with Firebase](https://cloud.google.com/firestore/docs/client/get-firebase)
-
-## Web app registration
-
-To register an application for your project, follow [these steps](https://firebase.google.com/docs/web/setup)
-
-The information generated in this step needs to be inserted in the [.env](https://github.com/emepuchades/task-manager/blob/main/.env.example) file and placed in the [firebase.js](https://github.com/emepuchades/task-manager/blob/main/src/firebase.js) file.
+1. Go to [Firebase](https://firebase.google.com/), create a project (Analytics is optional) and register a web app ([steps](https://firebase.google.com/docs/web/setup)).
+2. In **Authentication**, enable two sign-in methods: **Google** and **Email/Password**.
+3. In **Firestore Database**, create a database in test mode.
+4. Copy `.env.example` to `.env` and paste the keys of your web app. They are read in `src/firebase.js`:
 
 ```javascript
 const firebaseConfig = {
-    // Your configuration and your keys
     apiKey: process.env.REACT_APP_APIKEY,
     authDomain: process.env.REACT_APP_AUTHDOMAIN,
     projectId: process.env.REACT_APP_PROJECTID,
@@ -42,39 +81,17 @@ const firebaseConfig = {
 }
 ```
 
-## Enable Authentication
-
-You will need to enable two authentication patterns
-
-1. Google Account
-2. Email and password
-
-For more information about enabling authentication, click [here](https://firebase.google.com/docs/auth)
-
-## Enable Firetore Database
-
-Go to Compilation > Firestore Database and enable a cloud store database for the project (test-based)
-
-For more information about enabling firestore database, click [here](https://firebase.google.com/docs/firestore/quickstart?hl=es&authuser=0)
-
-## Configuration
-
-Rename the .env.example and place the information generated in the prior step here. Also, do not forget to provide the same information in the [firebase.js](https://github.com/emepuchades/task-manager/blob/main/src/firebase.js) file.
-
-## Start the application
-
-1. Install the project dependencies with the npm command.
+Then install and run. The app opens at http://localhost:3000.
 
 ```bash
 npm install
-```
-
-2. Run the application. The browser will be opened at http://localhost:3000/
-
-```bash
 npm start
 ```
 
-## Start contributing 💚👇
+## Contributing
 
-For more information check the [CONTRIBUTING.md](https://github.com/emepuchades/task-manager/blob/main/CONTRIBUTING.md) file
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE) · Made by [María Puchades](https://github.com/emepuchades)
