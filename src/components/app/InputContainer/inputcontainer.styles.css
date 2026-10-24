@@ -1,32 +1,43 @@
 .input-container {
-    width: 262px;
-    margin-right: 0.5rem;
-    border-style: dashed;
-    border-color: #e0e1e5;
-    margin-left: 15px;
+  margin: 0;
 
   .input-content {
     width: 100%;
-    max-width: 300px;
-    border-radius: 5px;
-    background-color: #F1F2F7;
-    opacity: 0.8;
+    border-radius: var(--radius-md);
     display: flex;
-    justify-content: center;
+    transition: background-color 0.15s;
 
-
-   .button-content {
+    .button-content {
+      width: 100%;
       cursor: pointer;
       background: none;
-      padding: 0.5rem;
+      padding: 9px 10px;
       border: none;
-      margin: auto;
+      margin: 0;
       text-align: left;
       font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-muted);
     }
 
     &:hover {
-      background-color: #ddd;
+      background-color: var(--color-surface);
+
+      .button-content {
+        color: var(--color-primary);
+      }
     }
+  }
+}
+
+.wrapper > div > .input-container {
+  width: 296px;
+  min-width: 296px;
+  padding: 8px;
+  border: 2px dashed var(--color-border);
+  border-radius: 16px;
+
+  .input-content:hover {
+    background-color: var(--color-column);
   }
 }
