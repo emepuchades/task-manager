@@ -1,4 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --color-primary: #3b79d3;
+    --color-primary-dark: #2f66b8;
+    --color-primary-soft: #e3edfb;
+    --color-background: #edf1f9;
+    --color-surface: #ffffff;
+    --color-column: #f5f7fb;
+    --color-hover: #e2e8f5;
+    --color-hover-light: #f3f6fb;
+    --color-field: #f5f7fb;
+    --color-border: #e6eaf2;
+    --color-border-strong: #cfd6e4;
+    --color-text: #1b2235;
+    --color-text-muted: #5f6b85;
+    --color-text-faint: #96a0b5;
+    --color-danger: #d6453d;
+    --color-favorite: #e8475f;
+    --color-blue: #3b79d3;
+    --color-blue-soft: #e3edfb;
+    --color-sun: #c58a0c;
+    --color-sun-soft: #fdf0cf;
+    --color-green: #2e9d63;
+    --color-green-soft: #dcf3e6;
+    --color-coral: #dc5548;
+    --color-coral-soft: #fde5e2;
+    --color-violet: #7a5fe0;
+    --color-violet-soft: #ebe6fd;
+    --color-teal: #1f95a4;
+    --color-teal-soft: #d9f1f4;
+    --shadow-card: 0 1px 2px rgba(27, 34, 53, 0.06);
+    --shadow-hover: 0 8px 20px rgba(27, 34, 53, 0.08);
+    --shadow-pop: 0 12px 32px rgba(27, 34, 53, 0.14);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-panel: 20px;
+    --gap-panel: 12px;
+    --nav-width: 76px;
+    --nav-width-expand: 248px;
+    --top-height: 68px;
+}
+
+* {
+    box-sizing: border-box;
+}
 
 .App {
     height: 100vh;
@@ -7,6 +53,65 @@
 body {
     margin: 0;
     font-family: 'Fira Sans', sans-serif;
-    font-size: 18px;
-    background-color: #F1F2F7;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-text);
+    background-color: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+    color: inherit;
+}
+
+::selection {
+    background-color: var(--color-primary-soft);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.color-0 {
+    --color-tag: var(--color-blue);
+    --color-tag-soft: var(--color-blue-soft);
+}
+
+.color-1 {
+    --color-tag: var(--color-sun);
+    --color-tag-soft: var(--color-sun-soft);
+}
+
+.color-2 {
+    --color-tag: var(--color-green);
+    --color-tag-soft: var(--color-green-soft);
+}
+
+.color-3 {
+    --color-tag: var(--color-coral);
+    --color-tag-soft: var(--color-coral-soft);
+}
+
+.color-4 {
+    --color-tag: var(--color-violet);
+    --color-tag-soft: var(--color-violet-soft);
+}
+
+.color-5 {
+    --color-tag: var(--color-teal);
+    --color-tag-soft: var(--color-teal-soft);
 }
