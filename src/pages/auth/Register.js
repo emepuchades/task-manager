@@ -32,79 +32,102 @@ function Register() {
             {error && <Alert message={error} />}
 
             <Form onSubmit={handleSubmit}>
-                <Title>Registro</Title>
+                <Title>Crear cuenta</Title>
+                <Text className='subtitle'>
+                    Empieza a organizar tus proyectos.
+                </Text>
 
                 <TextInput> Email </TextInput>
                 <Input
                     type='email'
                     onChange={e => setUser({ ...user, email: e.target.value })}
-                    placeholder='email'
+                    placeholder='nombre@email.com'
                 />
 
                 <TextInput> Contraseña </TextInput>
                 <Input
                     type='password'
-                    placeholder='password'
+                    placeholder='Mínimo 6 caracteres'
                     onChange={e =>
                         setUser({ ...user, password: e.target.value })
                     }
                 />
 
-                <Button> Register </Button>
+                <Button> Crear cuenta </Button>
             </Form>
         </Block>
     )
 }
 
 const Block = styled.div`
+    width: 360px;
+    max-width: 100%;
 `
 
 const Title = styled.p`
-    font-size: 30px;
-    font-weight: bold;
-    color: #3b79d3;
-    margin: 5px;
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
 `
 const Text = styled.p`
-    font-size: 15px;
+    margin: 10px 0 22px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--color-primary);
     &.textpassword {
         width: 100%;
     }
+    &.subtitle {
+        margin: 0 0 10px;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--color-text-muted);
+    }
 `
 const TextInput = styled.p`
-    font-size: 18px;
+    margin: 18px 0 8px;
+    font-size: 14px;
+    font-weight: 600;
     width: 100%;
 `
 const Form = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     background-color: #ffffff;
-    width: 340px;
-    height: 350px;
-    border-radius: 8px;
-    padding: 60px;
+    width: 100%;
 `
 
 const Input = styled.input`
-    border: none;
+    border: 1px solid var(--color-border);
     outline: none;
-    border-radius: 8px;
-    width: 96%;
-    padding: 10px;
-    background-color: #F1F2F7;
+    border-radius: var(--radius-md);
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    font-size: 14.5px;
+    background-color: var(--color-field);
+    :focus {
+        background-color: var(--color-surface);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
 `
 const Button = styled.button`
     width: 100%;
-    padding: 1em;
-    background: #3b79d3;
-    margin-top: 30px;
+    height: 44px;
+    background: var(--color-primary);
+    margin-top: 28px;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     font-weight: 600;
     color: #ffffff;
     font-size: 15px;
+    cursor: pointer;
+    :hover {
+        background-color: var(--color-primary-dark);
+    }
 `
 
 export default Register
