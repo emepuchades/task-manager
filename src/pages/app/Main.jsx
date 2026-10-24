@@ -14,7 +14,7 @@ import Favorites from './Favorites/Favorites'
 import Profile from './Profile/Profile'
 
 function Main() {
-    const { menuState } = useContext(AppContext)
+    const { menuState, expand } = useContext(AppContext)
     const { user } = useAuth()
 
     const [boards, setBoards] = useState([])
@@ -109,14 +109,23 @@ function Main() {
         <>
             <NavLeft />
             <NavTop />
-            <Block>{renderBody(menuState)}</Block>
+            <Block className={expand ? 'expand' : ''}>
+                {renderBody(menuState)}
+            </Block>
         </>
     )
 }
 
 const Block = styled.div`
-    margin-left: 90px;
-    padding: 0px 34px;
+    min-height: calc(100vh - var(--top-height) - var(--gap-panel) * 2);
+    margin: 0 var(--gap-panel) var(--gap-panel) var(--nav-width);
+    padding: 28px 32px 40px;
+    background-color: var(--color-surface);
+    border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+    transition: margin-left 0.15s ease;
+    &.expand {
+        margin-left: var(--nav-width-expand);
+    }
     .bsx {
         position: absolute;
         top: 0;

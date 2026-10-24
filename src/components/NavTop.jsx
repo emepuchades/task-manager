@@ -11,14 +11,15 @@ import Divider from '@mui/material/Divider'
 import InputBase from '@mui/material/InputBase'
 import { AppContext } from '../App'
 import IconButton from '@mui/material/IconButton'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { BsPerson, BsSearch } from 'react-icons/bs'
 import { useAuth } from '../pages/auth/AuthContext'
 import Avatar from '@mui/material/Avatar'
 
 function NavTop() {
-    const { menuState } = useContext(AppContext)
+    const { menuState, expand } = useContext(AppContext)
     const { logout, user } = useAuth()
+    const { id } = useParams()
     const [boards, setBoards] = useState([])
     const [isSearch, setIsSearch] = useState('')
     const [isProfile, setIsProfile] = useState('')
@@ -82,19 +83,22 @@ function NavTop() {
     }
 
     return (
-        <Block>
-            <Route>{renderSwitch(menuState)}</Route>
+        <Block className={expand ? 'expand' : ''}>
+            <Route>{id ? 'Tableros' : renderSwitch(menuState)}</Route>
             <RigthBlock>
                 <Search>
                     <Paper
                         component='form'
                         className='paper'
                         sx={{
-                            p: '2px 4px',
+                            p: '0 4px 0 6px',
                             display: 'flex',
                             alignItems: 'center',
-                            width: 250,
-                            height: 30,
+                            width: { xs: 170, md: 260 },
+                            height: 40,
+                            borderRadius: '10px',
+                            border: '1px solid var(--color-border)',
+                            backgroundColor: 'var(--color-field)',
                             boxShadow: 'none',
                         }}
                     >
@@ -106,7 +110,11 @@ function NavTop() {
                         />
                         <IconButton
                             type='submit'
-                            sx={{ p: '10px' }}
+                            sx={{
+                                p: '6px',
+                                fontSize: 14,
+                                color: 'var(--color-text-faint)',
+                            }}
                             aria-label='search'
                         >
                             <BsSearch />
@@ -125,7 +133,7 @@ function NavTop() {
                                 ))
                             ) : (
                                 <Boards>
-                                    No hay ningun projecto con este nombre
+                                    No hay ningún proyecto con este nombre
                                 </Boards>
                             )
                         ) : null}
@@ -170,21 +178,31 @@ function NavTop() {
 }
 
 const Block = styled.div`
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display: flex;
     align-items: center;
-    margin-left: 85px;
-    height: 80px;
-    background-color: #ffffff;
+    margin: var(--gap-panel) var(--gap-panel) 0 var(--nav-width);
+    height: var(--top-height);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+    box-shadow: 0 calc(var(--gap-panel) * -1) 0 0 var(--color-background);
+    transition: margin-left 0.15s ease;
+
+    &.expand {
+        margin-left: var(--nav-width-expand);
+    }
 
     .input-search {
-        background-color: #f3f3f3;
-        border-radius: 10px;
-        height: 35px;
-        text-indent: 15px;
+        background-color: transparent;
+        height: 38px;
+        font-size: 14px;
     }
 
     input {
-        text-indent: 15px;
+        text-indent: 4px;
     }
 `
 
@@ -192,14 +210,16 @@ const Route = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0px 34px;
-    font-size: 26px;
-    font-weight: bold;
+    padding: 0px 32px;
+    font-size: 19px;
+    font-weight: 700;
 `
 
 const RigthBlock = styled.div`
     display: flex;
-    float: rigth;
+    align-items: center;
+    gap: 16px;
+    padding-right: 28px;
     .icon-bell {
         width: 24px;
         height: 24px;
@@ -207,50 +227,99 @@ const RigthBlock = styled.div`
 `
 const SearchFilter = styled.div`
     position: absolute;
-    background: white;
-    width: 258px;
-    margin-top: 5px;
+    top: 46px;
+    left: 0;
+    width: 100%;
+    padding: 6px;
+    background: var(--color-surface);
+    border-radius: 12px;
+    box-shadow: var(--shadow-pop);
+    :empty {
+        display: none;
+    }
 `
 const Boards = styled.div`
-    font-size: 17px;
-    border-bottom: 1px #f1f1f1 solid;
-    padding: 8px;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    padding: 9px 10px;
+    border-radius: var(--radius-sm);
+    :hover {
+        background-color: var(--color-hover-light);
+    }
     a {
+        display: block;
         text-decoration: none;
-        color: #111111;
+        color: var(--color-text);
     }
 `
 
 const Search = styled.div`
-    margin: 0px 60px;
+    position: relative;
 `
 const User = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
-    margin-right: 60px;
+    .avatar {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        background-color: var(--color-primary);
+        cursor: pointer;
+        transition: box-shadow 0.15s;
+        :hover {
+            box-shadow: 0 0 0 4px var(--color-primary-soft);
+        }
+    }
 `
 
 const ProfileSettings = styled.div`
     position: absolute;
-    background: white;
-    width: 180px;
-    top: 70px;
-    height: 100px;
-    right: 21px;
-    margin-top: 5px;
-    text-align: center;
+    top: 48px;
+    right: 0;
+    width: 230px;
+    padding: 6px;
+    background: var(--color-surface);
+    border-radius: 12px;
+    box-shadow: var(--shadow-pop);
+    .MuiList-root {
+        padding: 0;
+    }
+    .MuiListItem-root {
+        padding: 9px 10px;
+    }
+    .MuiListItemText-primary {
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .MuiDivider-root {
+        margin: 4px 0;
+        border-color: var(--color-border);
+    }
+    .MuiListItemButton-root {
+        padding: 0;
+        border-radius: var(--radius-sm);
+    }
     .icon-person {
-        width: 24px;
-        height: 24px;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        color: var(--color-text-muted);
     }
 `
 
 const Button = styled.div`
-    text-align: center;
-    padding: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    font-size: 14px;
+    color: var(--color-danger);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     :hover {
-        background-color: #f0f0f3;
+        background-color: var(--color-hover-light);
     }
 `
 
