@@ -12,7 +12,7 @@ import Board from './pages/app/Board/Board'
 export const AppContext = createContext()
 
 function App() {
-    const [expand, setExpand] = useState(false)
+    const [expand, setExpand] = useState(true)
     const [menuState, setMenuState] = useState(0)
 
     const changeExpand = () => {

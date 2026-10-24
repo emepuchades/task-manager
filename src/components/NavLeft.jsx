@@ -1,7 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AppContext } from '../App'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase'
+import { useAuth } from '../pages/auth/AuthContext'
 import logo from '../assets/images/logo.png'
 import {
     BsHouse,
@@ -15,12 +18,30 @@ import {
 function NavLeft() {
     const { changeExpand, expand, setMenuState, menuState } =
         useContext(AppContext)
+    const { user } = useAuth()
+    const { id } = useParams()
+    const [boards, setBoards] = useState([])
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(
+            collection(db, 'userBoards', user.uid, 'boards'),
+            snapShot => {
+                setBoards(
+                    snapShot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }))
+                )
+            }
+        )
+        return () => unsubscribe()
+    }, [user.uid])
 
     return (
         <Nav className={expand ? 'expand' : ''}>
             <MenuTop>
                 <Image src={logo} alt='Logo' />
-                
+                <Brand className='brand'>Task Manager</Brand>
                 <Arrow onClick={() => changeExpand()}>
                     {expand ? (
                         <BsArrowBarLeft className='icon-sccore' />
@@ -28,12 +49,11 @@ function NavLeft() {
                         <BsArrowBarRight className='icon-sccore' />
                     )}
                 </Arrow>
-                
             </MenuTop>
             <Menu>
                 <Li
                     onClick={() => setMenuState(0)}
-                    className={menuState === 0 ? 'focus' : null}
+                    className={menuState === 0 && !id ? 'focus' : null}
                 >
                     <BsHouse className='icon-search' />
                     <Link to='/'>
@@ -43,7 +63,7 @@ function NavLeft() {
                 </Li>
                 <Li
                     onClick={() => setMenuState(1)}
-                    className={menuState === 1 ? 'focus' : null}
+                    className={menuState === 1 && !id ? 'focus' : null}
                 >
                     <BsCollection className='icon-search' />
                     <Link to='/'>
@@ -53,14 +73,14 @@ function NavLeft() {
                 </Li>
                 <Li
                     onClick={() => setMenuState(2)}
-                    className={menuState === 2 ? 'focus' : null}
+                    className={menuState === 2 && !id ? 'focus' : null}
                 >
                     <BsHeart className='icon-search' />
                     <Text>Favoritos</Text>
                 </Li>
                 <Li
                     onClick={() => setMenuState(3)}
-                    className={menuState === 3 ? 'focus' : null}
+                    className={menuState === 3 && !id ? 'focus' : null}
                 >
                     <BsPerson className='icon-search' />
                     <Link to='/'>
@@ -69,93 +89,210 @@ function NavLeft() {
                     </Link>
                 </Li>
             </Menu>
+            {boards.length > 0 ? (
+                <Projects>
+                    <TextSection className='brand'>Proyectos</TextSection>
+                    {boards.map((board, index) => (
+                        <Link
+                            key={board.id}
+                            className={`project color-${index % 6} ${
+                                id === board.name ? 'focus' : ''
+                            }`}
+                            to={`/project/${board.name}`}
+                        >
+                            <ProjectIcon>{board.name[0]}</ProjectIcon>
+                            <Text>{board.name}</Text>
+                        </Link>
+                    ))}
+                </Projects>
+            ) : null}
         </Nav>
     )
 }
 
 const Nav = styled.nav`
-    position: absolute;
-    float: left;
-    background: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--color-background);
     height: 100vh;
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #e6e6ea;
-    transition: all 0.2s linear 0s;
-    width: 86px;
-    min-width: 86px;
-    color: black;
+    transition: width 0.15s ease, box-shadow 0.15s ease;
+    width: var(--nav-width);
+    min-width: var(--nav-width);
+    color: var(--color-text-muted);
     &.expand {
-        position: relative;
-        width: 230px;
-        min-width: 230px;
+        width: var(--nav-width-expand);
+        min-width: var(--nav-width-expand);
         .icon-sccore {
-            display: inline-block;
+            display: flex;
         }
     }
     :hover {
-        width: 230px;
-        min-width: 230px;
+        width: var(--nav-width-expand);
+        min-width: var(--nav-width-expand);
         cursor: default;
         .icon-sccore {
-            display: inline-block;
+            display: flex;
+        }
+    }
+    :hover:not(.expand) {
+        box-shadow: var(--shadow-pop);
+    }
+    :not(.expand):not(:hover) {
+        .brand {
+            opacity: 0;
         }
     }
 `
 
 const Image = styled.img`
-    padding: 28px;
+    margin-left: 18px;
     height: 40px;
     width: 40px;
+    min-width: 40px;
 `
 
-const Menu = styled.div``
+const Brand = styled.div`
+    margin-left: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-text);
+    white-space: nowrap;
+    transition: opacity 0.15s;
+`
+
+const Menu = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 12px;
+`
 
 const MenuTop = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: var(--top-height);
+    min-height: var(--top-height);
+    margin-top: var(--gap-panel);
     .icon-sccore {
         position: absolute;
-        right: 0;
-        padding: 28px;
+        top: 50%;
+        right: 14px;
         display: none;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        margin-top: -15px;
+        padding: 6px;
+        border-radius: var(--radius-sm);
+        color: var(--color-text-muted);
+        cursor: pointer;
+        :hover {
+            background-color: var(--color-hover);
+            color: var(--color-text);
+        }
     }
 `
 
 const Li = styled.div`
     display: flex;
+    align-items: center;
     overflow: hidden;
-    padding: 10px 20px;
+    height: 44px;
+    margin: 0 12px;
+    padding: 0 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
     .icon-search {
         overflow: visible;
-        width: 24px;
-        height: 24px;
-        padding: 10px;
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
     }
     :hover {
-        color: #3169f6;
-        border-right-width: 2px;
-        border-right-style: solid;
-        border-left-color: #3169f6;
+        color: var(--color-text);
+        background-color: var(--color-hover);
     }
     a {
         text-decoration: none;
-        color: black;
-        :hover {
-            color: #3169f6;
-        }
+        color: inherit;
     }
     &.focus {
-        color: #3169f6;
-        border-right-width: 2px;
-        border-right-style: solid;
-        border-left-color: #3169f6;
+        color: var(--color-primary);
+        background-color: var(--color-surface);
+        box-shadow: var(--shadow-card);
         a {
-            color: #3169f6;
+            color: var(--color-text);
+            font-weight: 600;
         }
     }
 `
 const Text = styled.div`
-    margin-left: 30px;
-    padding: 12px 5px;
+    margin-left: 16px;
+    overflow: hidden;
+    font-size: 14.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`
+
+const Projects = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 28px;
+    padding-bottom: 24px;
+    overflow-y: auto;
+    .project {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        height: 40px;
+        margin: 0 12px;
+        padding: 0 14px;
+        border-radius: 12px;
+        color: var(--color-text);
+        text-decoration: none;
+        :hover {
+            background-color: var(--color-hover);
+        }
+        &.focus {
+            font-weight: 600;
+            background-color: var(--color-surface);
+            box-shadow: var(--shadow-card);
+        }
+    }
+`
+
+const TextSection = styled.div`
+    margin: 0 0 8px 28px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+    transition: opacity 0.15s;
+`
+
+const ProjectIcon = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 7px;
+    background-color: var(--color-tag-soft);
+    color: var(--color-tag);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
 `
 
 const Arrow = styled.a``
